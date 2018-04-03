@@ -19,6 +19,12 @@ namespace Documents.iOS
             AllowsDocumentCreation = true;
             AllowsPickingMultipleItems = true;
 
+            var renameWithExt = new UIDocumentBrowserAction("com.glennhevey.rename-with-extension", "Rename with Extension", UIDocumentBrowserActionAvailability.Menu, RenameWithExtensionAction);
+
+            renameWithExt.SupportedContentTypes = new string[] { "public.item" };
+
+            CustomActions = new UIDocumentBrowserAction[] { renameWithExt };
+
             //BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
             //View.TintColor = UIColor.LightTextColor;
         }
@@ -27,6 +33,21 @@ namespace Documents.iOS
         {
             base.DidReceiveMemoryWarning();
             // Release any cached data, images, etc that aren't in use.
+        }
+
+        void RenameWithExtensionAction(NSUrl[] obj)
+        {
+            Console.WriteLine("Rename with Extension Tapped");
+            //Create Alert
+            var okAlertController = UIAlertController.Create("Rename with Extension", "Rename with Extension Selected", UIAlertControllerStyle.Alert);
+
+            //Add Action
+            okAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+
+            // Present Alert
+            PresentViewController(okAlertController, true, null);
+
+
         }
 
     }
