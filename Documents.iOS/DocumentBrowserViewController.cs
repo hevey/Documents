@@ -1,5 +1,6 @@
 using Foundation;
 using System;
+using System.IO;
 using UIKit;
 
 namespace Documents.iOS
@@ -19,11 +20,16 @@ namespace Documents.iOS
             AllowsDocumentCreation = true;
             AllowsPickingMultipleItems = true;
 
-            var renameWithExt = new UIDocumentBrowserAction("com.glennhevey.rename-with-extension", "Rename with Extension", UIDocumentBrowserActionAvailability.Menu, RenameWithExtensionAction);
+            var renameWithExt = new UIDocumentBrowserAction("com.glennhevey.rename-with-extension", "Full Rename", UIDocumentBrowserActionAvailability.Menu, RenameWithExtensionAction);
 
             renameWithExt.SupportedContentTypes = new string[] { "public.item" };
 
             CustomActions = new UIDocumentBrowserAction[] { renameWithExt };
+
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var directoryname = Path.Combine(documents, "Downloads");
+
+            Directory.CreateDirectory(directoryname);
 
             //BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
             //View.TintColor = UIColor.LightTextColor;
@@ -39,7 +45,7 @@ namespace Documents.iOS
         {
             Console.WriteLine("Rename with Extension Tapped");
             //Create Alert
-            var okAlertController = UIAlertController.Create("Rename with Extension", "Rename with Extension Selected", UIAlertControllerStyle.Alert);
+            var okAlertController = UIAlertController.Create("Full Rename", "Rename filename with extension", UIAlertControllerStyle.Alert);
 
             //Add Action
             okAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
