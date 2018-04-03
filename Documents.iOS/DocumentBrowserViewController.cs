@@ -19,8 +19,8 @@ namespace Documents.iOS
             AllowsDocumentCreation = true;
             AllowsPickingMultipleItems = true;
 
-            BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
-            View.TintColor = UIColor.LightTextColor;
+            //BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
+            //View.TintColor = UIColor.LightTextColor;
         }
 
         public override void DidReceiveMemoryWarning()
@@ -28,5 +28,6 @@ namespace Documents.iOS
             base.DidReceiveMemoryWarning();
             // Release any cached data, images, etc that aren't in use.
         }
+
     }
 }
