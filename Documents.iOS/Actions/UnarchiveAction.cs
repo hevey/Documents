@@ -57,7 +57,6 @@ namespace Documents.iOS.Actions
                 }));
 
                 okAlertController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
-
                 // Present Alert
                 _view.PresentViewController(okAlertController, true, null);
 
@@ -65,6 +64,8 @@ namespace Documents.iOS.Actions
 
             }));
             unarchiveLocationController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+
+            unarchiveLocationController.PopoverPresentationController.SourceView = _view.View;
 
             // Present Alert
             _view.PresentViewController(unarchiveLocationController, true, null);
