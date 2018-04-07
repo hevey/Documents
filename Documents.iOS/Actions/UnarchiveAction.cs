@@ -16,7 +16,7 @@ namespace Documents.iOS.Actions
 
         public UIDocumentBrowserAction SetupAction()
         {
-            var unarchiveExt = new UIDocumentBrowserAction("com.glennhevey.unarchive", "Unarchive", UIDocumentBrowserActionAvailability.Menu, Action);
+            var unarchiveExt = new UIDocumentBrowserAction("com.glennhevey.unarchive", "Extract", UIDocumentBrowserActionAvailability.Menu, Action);
             unarchiveExt.SupportedContentTypes = new string[] { "public.archive" };
             return unarchiveExt;
         }
@@ -26,7 +26,7 @@ namespace Documents.iOS.Actions
             var am = new ArchiveManager();
             var path = obj[0].Path;
             //Create Alert
-            var unarchiveLocationController = UIAlertController.Create("Unarchive", "Unarchive file to folder", UIAlertControllerStyle.ActionSheet);
+            var unarchiveLocationController = UIAlertController.Create("Extract", "Extract file to folder", UIAlertControllerStyle.ActionSheet);
 
             unarchiveLocationController.AddAction(UIAlertAction.Create("Current Folder", UIAlertActionStyle.Default, (actionparam) => Unarchive(actionparam, UnarchiveLocationEnum.CurrentDirectory, path)));
             unarchiveLocationController.AddAction(UIAlertAction.Create($"Sub Folder ({Path.GetFileNameWithoutExtension(path)})", UIAlertActionStyle.Default, (actionparam) => Unarchive(actionparam, UnarchiveLocationEnum.SubDirectoryWithArchiveName, path)));
@@ -75,7 +75,11 @@ namespace Documents.iOS.Actions
             var archiveManager = new ArchiveManager();
             if (location != UnarchiveLocationEnum.CurrentDirectory)
             {
-                CheckFolderLocation(location, filePath, archiveManager, folderToSave);
+                var completed = CheckFolderLocation(location, filePath, archiveManager, folderToSave);
+                if(!completed)
+                {
+                    archiveManager.UnarchiveFile(filePath, location, folderToSave);
+                }
             }
             else
             {
@@ -83,11 +87,13 @@ namespace Documents.iOS.Actions
             }
         }
 
-        private void CheckFolderLocation(UnarchiveLocationEnum location, string filePath, ArchiveManager archiveManager, string folderToSave = "")
+        private bool CheckFolderLocation(UnarchiveLocationEnum location, string filePath, ArchiveManager archiveManager, string folderToSave = "")
         {
+            var completed = false;
             var folderLocation = archiveManager.DetermineExtractLocation(filePath, location, folderToSave);
             if (Directory.Exists(folderLocation))
             {
+                completed = true;
                 var okAlertController = UIAlertController.Create("Folder Exists", $"{Path.GetFileNameWithoutExtension(folderLocation)} would you like to delete it?", UIAlertControllerStyle.Alert);
 
                 //Add Action
@@ -104,7 +110,7 @@ namespace Documents.iOS.Actions
                 _view.PresentViewController(okAlertController, true, null);
 
             }
-
+            return completed;
         }
     }
 }
