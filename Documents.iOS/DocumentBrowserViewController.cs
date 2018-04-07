@@ -2,7 +2,11 @@ using Foundation;
 using System;
 using System.IO;
 using UIKit;
-
+using System.IO.Compression;
+using System.Linq;
+using Documents.iOS.Managers;
+using Documents.iOS.Actions;
+using System.Collections.Generic;
 namespace Documents.iOS
 {
     public partial class DocumentBrowserViewController : UIDocumentBrowserViewController
@@ -19,12 +23,9 @@ namespace Documents.iOS
 
             AllowsDocumentCreation = true;
             AllowsPickingMultipleItems = true;
+            BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
 
-            var renameWithExt = new UIDocumentBrowserAction("com.glennhevey.rename-with-extension", "Full Rename", UIDocumentBrowserActionAvailability.Menu, RenameWithExtensionAction);
-
-            renameWithExt.SupportedContentTypes = new string[] { "public.item" };
-
-            CustomActions = new UIDocumentBrowserAction[] { renameWithExt };
+            CustomActions = SetupActions();
 
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var directoryname = Path.Combine(documents, "Downloads");
@@ -35,26 +36,25 @@ namespace Documents.iOS
             //View.TintColor = UIColor.LightTextColor;
         }
 
+        UIDocumentBrowserAction[] SetupActions()
+        {
+            IActionManager actionManager = new ActionManager();
+            var list = new List<UIDocumentBrowserAction>();
+            foreach(ICustomAction action in actionManager.GetActions(this))
+            {
+                list.Add(action.SetupAction());
+            }
+            return list.ToArray();
+        }
+
         public override void DidReceiveMemoryWarning()
         {
             base.DidReceiveMemoryWarning();
             // Release any cached data, images, etc that aren't in use.
         }
 
-        void RenameWithExtensionAction(NSUrl[] obj)
-        {
-            Console.WriteLine("Rename with Extension Tapped");
-            //Create Alert
-            var okAlertController = UIAlertController.Create("Full Rename", "Rename filename with extension", UIAlertControllerStyle.Alert);
-
-            //Add Action
-            okAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
-
-            // Present Alert
-            PresentViewController(okAlertController, true, null);
 
 
-        }
 
     }
 }

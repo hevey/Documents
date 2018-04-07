@@ -85,6 +85,8 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -92,6 +94,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Managers\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Actions\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -100,6 +105,7 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -108,6 +114,14 @@
     <Compile Include="DocumentBrowserViewController.designer.cs">
       <DependentUpon>DocumentBrowserViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Managers\ArchiveManager.cs" />
+    <Compile Include="Enums\UnarchiveLocationEnum.cs" />
+    <Compile Include="Enums\ArchiveTypeEnum.cs" />
+    <Compile Include="Actions\ICustomAction.cs" />
+    <Compile Include="Actions\UnarchiveAction.cs" />
+    <Compile Include="Managers\IActionManager.cs" />
+    <Compile Include="Managers\ActionManager.cs" />
+    <Compile Include="Actions\RenameWithExtension.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
