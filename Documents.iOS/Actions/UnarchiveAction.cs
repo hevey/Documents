@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Foundation;
 using UIKit;
 using Documents.iOS.Managers;
 using System.Linq;
 using System.IO;
+using CoreGraphics;
+using Documents.iOS.Utilities;
+
 namespace Documents.iOS.Actions
 {
     public class UnarchiveAction : ICustomAction
@@ -23,6 +27,7 @@ namespace Documents.iOS.Actions
 
         public void Action(NSUrl[] obj)
         {
+
             var am = new ArchiveManager();
             var path = obj[0].Path;
             //Create Alert
@@ -65,27 +70,52 @@ namespace Documents.iOS.Actions
             }));
             unarchiveLocationController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
 
-            unarchiveLocationController.PopoverPresentationController.SourceView = _view.View;
-
+            if (unarchiveLocationController.PopoverPresentationController != null)
+            {
+                unarchiveLocationController.PopoverPresentationController.SourceView = _view.View;
+                unarchiveLocationController.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.GetMidX(), _view.View.Bounds.GetMidY(), 0, 0);
+            }
             // Present Alert
             _view.PresentViewController(unarchiveLocationController, true, null);
         }
 
         private void Unarchive(UIAlertAction action, UnarchiveLocationEnum location, string filePath, string folderToSave = "")
         {
-            var archiveManager = new ArchiveManager();
+
+
+
             if (location != UnarchiveLocationEnum.CurrentDirectory)
             {
+                var archiveManager = new ArchiveManager();
+
                 var completed = CheckFolderLocation(location, filePath, archiveManager, folderToSave);
                 if(!completed)
                 {
-                    archiveManager.UnarchiveFile(filePath, location, folderToSave);
+                    PerformUnarchive(location, filePath, folderToSave);
+
                 }
             }
             else
             {
-                archiveManager.UnarchiveFile(filePath, location, folderToSave);
+                PerformUnarchive(location, filePath, folderToSave);
+
             }
+
+        }
+
+        private void PerformUnarchive(UnarchiveLocationEnum location, string filePath, string folderToSave = "")
+        {
+            var archiveManager = new ArchiveManager();
+
+            var bounds = UIScreen.MainScreen.Bounds;
+
+            // show the loading overlay on the UI thread using the correct orientation sizing
+            var loadPop = new LoadingOverlay(bounds, "Extract..."); // using field from step 2
+            _view.View.Add(loadPop);
+
+            archiveManager.UnarchiveFile(filePath, location, folderToSave);
+
+            loadPop.Hide();
         }
 
         private bool CheckFolderLocation(UnarchiveLocationEnum location, string filePath, ArchiveManager archiveManager, string folderToSave = "")
@@ -100,9 +130,25 @@ namespace Documents.iOS.Actions
                 //Add Action
                 okAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (sender) =>
                 {
-                    Directory.Delete(folderLocation, true);
-                    archiveManager.UnarchiveFile(filePath, location, folderToSave);
+                    var bounds = UIScreen.MainScreen.Bounds;
 
+                    // show the loading overlay on the UI thread using the correct orientation sizing
+                    var loadPop = new LoadingOverlay(bounds, "Extracting..."); // using field from step 2
+                    _view.View.Add(loadPop);
+
+
+
+
+                    Directory.Delete(folderLocation, true);
+                    _view.View.SetNeedsDisplay();
+                    Func<Task> UnarchiveFunc = async () => {
+                        //Needs to do this so folder is removed from display
+                        await Task.Delay(2000);
+                        archiveManager.UnarchiveFile(filePath, location, folderToSave);
+                        loadPop.Hide();
+                    };
+
+                    UnarchiveFunc();
                 }));
 
                 okAlertController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));

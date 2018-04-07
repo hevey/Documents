@@ -14,5 +14,8 @@ namespace Documents.iOS
     [Register ("DocumentBrowserViewController")]
     partial class DocumentBrowserViewController
     {
+        void ReleaseDesignerOutlets ()
+        {
+        }
     }
 }

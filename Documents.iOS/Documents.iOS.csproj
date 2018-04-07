@@ -107,6 +107,7 @@
     <Folder Include="Managers\" />
     <Folder Include="Enums\" />
     <Folder Include="Actions\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -132,6 +133,7 @@
     <Compile Include="Managers\IActionManager.cs" />
     <Compile Include="Managers\ActionManager.cs" />
     <Compile Include="Actions\RenameWithExtension.cs" />
+    <Compile Include="Utilities\LoadingOverlay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
