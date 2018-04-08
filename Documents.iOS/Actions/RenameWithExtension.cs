@@ -70,8 +70,8 @@ namespace Documents.iOS.Actions
                     _view.PresentViewController(blankExtensionAlert, true, null);
                 }
                 
-                Console.WriteLine($"Object Path: {obj[0].RelativePath}");
-                File.Move(obj[0].RelativePath, $"{obj[0].RelativePath.Substring(obj[0].RelativePath.LastIndexOf('/'))}{newName}");
+
+                File.Move(obj[0].Path, $"{Path.Combine(Path.GetDirectoryName(obj[0].Path),newName)}");
             }));
 
             renameAlertContoller.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (sender) => { }));
