@@ -21,7 +21,7 @@ namespace Documents.iOS
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
 
-            AllowsDocumentCreation = true;
+            AllowsDocumentCreation = false;
             AllowsPickingMultipleItems = true;
             BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
 
@@ -30,7 +30,10 @@ namespace Documents.iOS
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var directoryname = Path.Combine(documents, "Downloads");
 
-            Directory.CreateDirectory(directoryname);
+            if(!Directory.Exists(directoryname))
+            {
+                Directory.CreateDirectory(directoryname);
+            }
 
             //BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
             //View.TintColor = UIColor.LightTextColor;
