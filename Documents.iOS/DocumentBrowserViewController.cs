@@ -7,6 +7,8 @@ using System.Linq;
 using Documents.iOS.Managers;
 using Documents.iOS.Actions;
 using System.Collections.Generic;
+using Documents.iOS.Buttons;
+
 namespace Documents.iOS
 {
     public partial class DocumentBrowserViewController : UIDocumentBrowserViewController
@@ -24,10 +26,12 @@ namespace Documents.iOS
             AllowsDocumentCreation = false;
             AllowsPickingMultipleItems = true;
             BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
+            AdditionalTrailingNavigationBarButtonItems = setupTrailingButtons();
 
             CustomActions = SetupActions();
 
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            
             var directoryname = Path.Combine(documents, "Downloads");
 
             if(!Directory.Exists(directoryname))
@@ -46,6 +50,17 @@ namespace Documents.iOS
             foreach(ICustomAction action in actionManager.GetActions(this))
             {
                 list.Add(action.SetupAction());
+            }
+            return list.ToArray();
+        }
+
+        UIBarButtonItem[] setupTrailingButtons()
+        {
+            IUIBarButtonManager buttonManager = new UIBarButtonManager();
+            var list = new List<UIBarButtonItem>();
+            foreach(IUIBarButtonItem button in buttonManager.GetButtons())
+            {
+                list.Add(button.SetUiBarButtonItem());
             }
             return list.ToArray();
         }

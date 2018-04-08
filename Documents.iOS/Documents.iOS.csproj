@@ -120,6 +120,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buttons\IUIBarButtonItem.cs" />
+    <Compile Include="Buttons\NewItemBarButton.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="DocumentBrowserViewController.cs" />
@@ -134,6 +136,8 @@
     <Compile Include="Managers\IActionManager.cs" />
     <Compile Include="Managers\ActionManager.cs" />
     <Compile Include="Actions\RenameWithExtension.cs" />
+    <Compile Include="Managers\IUIBarButtonManager.cs" />
+    <Compile Include="Managers\UIBarButtonManager.cs" />
     <Compile Include="Utilities\LoadingOverlay.cs" />
     <Compile Include="Enums\UnarchiveActionEnum.cs" />
   </ItemGroup>
