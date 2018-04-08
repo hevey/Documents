@@ -134,6 +134,7 @@
     <Compile Include="Managers\ActionManager.cs" />
     <Compile Include="Actions\RenameWithExtension.cs" />
     <Compile Include="Utilities\LoadingOverlay.cs" />
+    <Compile Include="Enums\UnarchiveActionEnum.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

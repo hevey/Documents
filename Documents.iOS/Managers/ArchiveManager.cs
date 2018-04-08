@@ -11,7 +11,29 @@ namespace Documents.iOS.Managers
         {
         }
 
-        public void UnarchiveFile(string filePath, UnarchiveLocationEnum location, string folderToSave = "")
+        public bool CheckForArchiveFilesExists(string filePath, UnarchiveLocationEnum location, string folderToSave = "")
+        {
+            var collision = false;
+            var extractLocation = DetermineExtractLocation(filePath, location, folderToSave);
+
+            using (var zip = ZipFile.OpenRead(filePath))
+            {
+                foreach (var fe in zip.Entries)
+                {
+                    
+                        var extractFilePath = Path.Combine(extractLocation, fe.FullName);
+                        if((Directory.Exists(extractFilePath) || File.Exists(extractFilePath)))
+                        {
+                            collision = true;
+                        }
+
+                }
+            }
+
+            return collision;
+        }
+
+        public void UnarchiveFile(string filePath, UnarchiveLocationEnum location, UnarchiveActionEnum action, string folderToSave = "")
         {
             var archiveType = DetermineArchiveType(filePath);
             var extractLocation = DetermineExtractLocation(filePath, location, folderToSave);
@@ -21,15 +43,42 @@ namespace Documents.iOS.Managers
             switch (archiveType)
             {
                 case ArchiveTypeEnum.Zip:
-                    UnarchiveZip(filePath, extractLocation);
+                    UnarchiveZip(filePath, extractLocation, action);
                     break;
             }
 
         }
 
-        private void UnarchiveZip(string filePath, string extractLocation)
+        private void UnarchiveZip(string filePath, string extractLocation, UnarchiveActionEnum action)
         {
-            ZipFile.ExtractToDirectory(filePath, extractLocation);
+            var overwrite = false;
+            switch (action)
+            {
+                case UnarchiveActionEnum.MergeWithOverwrite:
+                case UnarchiveActionEnum.Overwrite:
+                    overwrite = true;
+                    break;
+                case UnarchiveActionEnum.MergeWithoutOverwrite:
+                    overwrite = false;
+                    break;
+                    
+            }
+            using(var zip = ZipFile.OpenRead(filePath))
+            {
+                foreach(var fe in zip.Entries)
+                {
+                    try
+                    {
+                        var extractFilePath = Path.Combine(extractLocation, fe.FullName);
+                        fe.ExtractToFile(extractFilePath, overwrite);
+                    }
+                    catch (IOException ex)
+                    {
+                        var a = ex;
+                        //Catching as dont care :)   
+                    }
+                }
+            }
         }
 
         public string DetermineExtractLocation(string filePath, UnarchiveLocationEnum location, string folderToSave)
