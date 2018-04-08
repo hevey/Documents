@@ -109,6 +109,7 @@
     <Folder Include="Enums\" />
     <Folder Include="Actions\" />
     <Folder Include="Utilities\" />
+    <Folder Include="TemplateFiles\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -140,6 +141,15 @@
     <Compile Include="Managers\UIBarButtonManager.cs" />
     <Compile Include="Utilities\LoadingOverlay.cs" />
     <Compile Include="Enums\UnarchiveActionEnum.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="TemplateFiles\Untitled.docx" />
+    <BundleResource Include="TemplateFiles\Untitled.key" />
+    <BundleResource Include="TemplateFiles\Untitled.numbers" />
+    <BundleResource Include="TemplateFiles\Untitled.pages" />
+    <BundleResource Include="TemplateFiles\Untitled.pptx" />
+    <BundleResource Include="TemplateFiles\Untitled.rtf" />
+    <BundleResource Include="TemplateFiles\Untitled.xlsx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
