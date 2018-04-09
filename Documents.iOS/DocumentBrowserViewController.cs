@@ -27,6 +27,7 @@ namespace Documents.iOS
             AllowsPickingMultipleItems = true;
             BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
             AdditionalTrailingNavigationBarButtonItems = setupTrailingButtons();
+            AdditionalLeadingNavigationBarButtonItems = setupLeadingButtons();
 
             CustomActions = SetupActions();
 
@@ -56,9 +57,20 @@ namespace Documents.iOS
 
         UIBarButtonItem[] setupTrailingButtons()
         {
-            IUIBarButtonManager buttonManager = new UIBarButtonManager();
+            IUIBarButtonManager buttonManager = new TrailingUIBarButtonManager();
             var list = new List<UIBarButtonItem>();
-            foreach(IUIBarButtonItem button in buttonManager.GetButtons())
+            foreach(IUIBarButtonItem button in buttonManager.GetButtons(this))
+            {
+                list.Add(button.SetUiBarButtonItem());
+            }
+            return list.ToArray();
+        }
+        
+        UIBarButtonItem[] setupLeadingButtons()
+        {
+            IUIBarButtonManager buttonManager = new LeadingUIBarButtonManager();
+            var list = new List<UIBarButtonItem>();
+            foreach(IUIBarButtonItem button in buttonManager.GetButtons(this))
             {
                 list.Add(button.SetUiBarButtonItem());
             }

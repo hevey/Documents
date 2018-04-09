@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="Buttons\IUIBarButtonItem.cs" />
     <Compile Include="Buttons\NewItemBarButton.cs" />
+    <Compile Include="Buttons\SettingsBarButton.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="DocumentBrowserViewController.cs" />
@@ -138,7 +139,8 @@
     <Compile Include="Managers\ActionManager.cs" />
     <Compile Include="Actions\RenameWithExtension.cs" />
     <Compile Include="Managers\IUIBarButtonManager.cs" />
-    <Compile Include="Managers\UIBarButtonManager.cs" />
+    <Compile Include="Managers\LeadingUIBarButtonManager.cs" />
+    <Compile Include="Managers\TrailingUIBarButtonManager.cs" />
     <Compile Include="Utilities\LoadingOverlay.cs" />
     <Compile Include="Enums\UnarchiveActionEnum.cs" />
   </ItemGroup>
@@ -148,8 +150,10 @@
     <BundleResource Include="TemplateFiles\Untitled.numbers" />
     <BundleResource Include="TemplateFiles\Untitled.pages" />
     <BundleResource Include="TemplateFiles\Untitled.pptx" />
-    <BundleResource Include="TemplateFiles\Untitled.rtf" />
     <BundleResource Include="TemplateFiles\Untitled.xlsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TemplateFiles\Untitled.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

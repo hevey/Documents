@@ -4,12 +4,12 @@ using UIKit;
 
 namespace Documents.iOS.Managers
 {
-    public class UIBarButtonManager : IUIBarButtonManager
+    public class LeadingUIBarButtonManager : IUIBarButtonManager
     {
-        public List<IUIBarButtonItem> GetButtons()
+        public List<IUIBarButtonItem> GetButtons(UIViewController viewController)
         {
             return new List<IUIBarButtonItem>() {
-                new NewItemBarButton()
+                //new SettingsBarButton()
             };
         }
     }
