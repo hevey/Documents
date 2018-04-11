@@ -104,12 +104,10 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-83.5%402x.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
     <Folder Include="Managers\" />
     <Folder Include="Enums\" />
     <Folder Include="Actions\" />
     <Folder Include="Utilities\" />
-    <Folder Include="TemplateFiles\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -124,6 +122,7 @@
     <Compile Include="Buttons\IUIBarButtonItem.cs" />
     <Compile Include="Buttons\NewItemBarButton.cs" />
     <Compile Include="Buttons\SettingsBarButton.cs" />
+    <Compile Include="Delegates\DocumentBrowserViewControllerDelegate.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="DocumentBrowserViewController.cs" />
@@ -145,15 +144,13 @@
     <Compile Include="Enums\UnarchiveActionEnum.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="TemplateFiles\Untitled.docx" />
-    <BundleResource Include="TemplateFiles\Untitled.key" />
-    <BundleResource Include="TemplateFiles\Untitled.numbers" />
-    <BundleResource Include="TemplateFiles\Untitled.pages" />
-    <BundleResource Include="TemplateFiles\Untitled.pptx" />
-    <BundleResource Include="TemplateFiles\Untitled.xlsx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="TemplateFiles\Untitled.txt" />
+    <Content Include="Untitled.docx" />
+    <Content Include="Untitled.key" />
+    <Content Include="Untitled.numbers" />
+    <Content Include="Untitled.pages" />
+    <Content Include="Untitled.pptx" />
+    <Content Include="Untitled.txt" />
+    <Content Include="Untitled.xlsx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
