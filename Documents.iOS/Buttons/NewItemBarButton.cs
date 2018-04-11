@@ -44,7 +44,7 @@ namespace Documents.iOS.Buttons
             }
             else
             {
-                newItemPopOver.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Default, action =>
+                newItemPopOver.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, action =>
                 {
                     newItemPopOver.DismissViewController(true, null);
                 }));
@@ -92,10 +92,18 @@ namespace Documents.iOS.Buttons
 
         private void createFile(string fileType)
         {
+            var newFilename = "Untitled";
             var docsPath = Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
-            var location = Path.Combine(docsPath, $"Untitled.{fileType}");
-
+            var location = Path.Combine(docsPath, $"{newFilename}.{fileType}");
             var file = Path.Combine("TemplateFiles", $"Untitled.{fileType}");
+            var i = 0;
+            while (File.Exists(location))
+            {
+                i++;
+                newFilename = $"Untitled {i}";
+                location = Path.Combine(docsPath, $"{newFilename}.{fileType}");
+            }
+
             File.Copy(file,location); 
         }
     }
