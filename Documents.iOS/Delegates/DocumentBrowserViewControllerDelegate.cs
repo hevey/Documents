@@ -23,19 +23,16 @@ namespace Documents.iOS.Delegates
             newItemPopOver.AddAction(UIAlertAction.Create("Numbers File (.numbers)",UIAlertActionStyle.Default,CreateNumbers));
             newItemPopOver.AddAction(UIAlertAction.Create("Keynote File (.key)",UIAlertActionStyle.Default,CreateKeynote));
             newItemPopOver.AddAction(UIAlertAction.Create("Text File (.txt)",UIAlertActionStyle.Default,CreateTxt));
+            newItemPopOver.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, CancelPopup));
             
             if (newItemPopOver.PopoverPresentationController != null)
             {
-                //TODO: Fix where this appears on screen. Should sit under the filename
+                //FIXME: remove hacky SourceRect code!!!
                 newItemPopOver.PopoverPresentationController.SourceView = controller.View;
                 newItemPopOver.PopoverPresentationController.PermittedArrowDirections =
                     UIPopoverArrowDirection.Up;
-                newItemPopOver.PopoverPresentationController.SourceRect =
-                    new CGRect(controller.View.Bounds.GetMidX(), controller.View.Bounds.GetMidY(), 0, 0);
-            }
-            else
-            {
-                newItemPopOver.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, CancelPopup));
+                newItemPopOver.PopoverPresentationController.SourceRect = new CGRect(controller.View.Bounds.Right - 97.5, controller.View.Bounds.Top + 55 , 0, 0);
+                //newItemPopOver.PopoverPresentationController.BarButtonItem = controller.ChildViewControllers[0].NavigationItem.RightBarButtonItem;
             }
             
             controller.PresentViewController(newItemPopOver, true, null);
@@ -86,7 +83,8 @@ namespace Documents.iOS.Delegates
 
         private void CreateFile(string fileType)
         {
-            _newDocumentUrl = NSBundle.MainBundle.GetUrlForResource("Untitled", fileType);
+            _newDocumentUrl = NSBundle.MainBundle.GetUrlForResource("Untitled", fileType, "Library/TemplateFiles");
+
             if (_newDocumentUrl == null)
             {
                 _importHandler(null, UIDocumentBrowserImportMode.None);
