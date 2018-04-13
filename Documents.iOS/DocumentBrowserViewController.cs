@@ -1,33 +1,36 @@
-using Foundation;
 using System;
 using System.IO;
 using UIKit;
-using System.IO.Compression;
-using System.Linq;
 using Documents.iOS.Managers;
-using Documents.iOS.Actions;
 using System.Collections.Generic;
+using Documents.iOS.Buttons;
+using Documents.iOS.Delegates;
+
 namespace Documents.iOS
 {
     public partial class DocumentBrowserViewController : UIDocumentBrowserViewController
     {
+        
         public DocumentBrowserViewController (IntPtr handle) : base (handle)
         {
             // Note: this .ctor should not contain any initialization logic.
         }
-
+        
+        
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
 
-            AllowsDocumentCreation = false;
+            AllowsDocumentCreation = true;
             AllowsPickingMultipleItems = true;
             BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
-
+            AdditionalLeadingNavigationBarButtonItems = SetupLeadingButtons();
+            Delegate = new DocumentBrowserViewControllerDelegate();
             CustomActions = SetupActions();
 
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            
             var directoryname = Path.Combine(documents, "Downloads");
 
             if(!Directory.Exists(directoryname))
@@ -37,27 +40,33 @@ namespace Documents.iOS
 
             //BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
             //View.TintColor = UIColor.LightTextColor;
+           
+            
+
         }
+
 
         UIDocumentBrowserAction[] SetupActions()
         {
             IActionManager actionManager = new ActionManager();
             var list = new List<UIDocumentBrowserAction>();
-            foreach(ICustomAction action in actionManager.GetActions(this))
+            foreach(var action in actionManager.GetActions(this))
             {
                 list.Add(action.SetupAction());
             }
             return list.ToArray();
         }
 
-        public override void DidReceiveMemoryWarning()
+        
+        UIBarButtonItem[] SetupLeadingButtons()
         {
-            base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
+            IUIBarButtonManager buttonManager = new LeadingUIBarButtonManager();
+            var list = new List<UIBarButtonItem>();
+            foreach(IUIBarButtonItem button in buttonManager.GetButtons(this))
+            {
+                list.Add(button.SetUiBarButtonItem());
+            }
+            return list.ToArray();
         }
-
-
-
-
     }
 }

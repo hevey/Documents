@@ -104,11 +104,12 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-83.5%402x.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
     <Folder Include="Managers\" />
     <Folder Include="Enums\" />
     <Folder Include="Actions\" />
     <Folder Include="Utilities\" />
+    <Folder Include="Library\" />
+    <Folder Include="Library\TemplateFiles\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -120,6 +121,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buttons\IUIBarButtonItem.cs" />
+    <Compile Include="Buttons\NewItemBarButton.cs" />
+    <Compile Include="Buttons\SettingsBarButton.cs" />
+    <Compile Include="Delegates\DocumentBrowserViewControllerDelegate.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="DocumentBrowserViewController.cs" />
@@ -134,8 +139,20 @@
     <Compile Include="Managers\IActionManager.cs" />
     <Compile Include="Managers\ActionManager.cs" />
     <Compile Include="Actions\RenameWithExtension.cs" />
+    <Compile Include="Managers\IUIBarButtonManager.cs" />
+    <Compile Include="Managers\LeadingUIBarButtonManager.cs" />
+    <Compile Include="Managers\TrailingUIBarButtonManager.cs" />
     <Compile Include="Utilities\LoadingOverlay.cs" />
     <Compile Include="Enums\UnarchiveActionEnum.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Library\TemplateFiles\Untitled.key" />
+    <Content Include="Library\TemplateFiles\Untitled.numbers" />
+    <Content Include="Library\TemplateFiles\Untitled.pages" />
+    <Content Include="Library\TemplateFiles\Untitled.pptx" />
+    <Content Include="Library\TemplateFiles\Untitled.txt" />
+    <Content Include="Library\TemplateFiles\Untitled.xlsx" />
+    <Content Include="Library\TemplateFiles\Untitled.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
