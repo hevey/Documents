@@ -18,7 +18,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: glenn.hevey@gmail.com (CA4B662K73)</CodesignKey>
+    <CodesignKey>iPhone Developer: Glenn Hevey (CA4B662K73)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchFastDev>true</MtouchFastDev>
@@ -35,7 +35,7 @@
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: glenn.hevey@gmail.com (CA4B662K73)</CodesignKey>
+    <CodesignKey>iPhone Developer: Glenn Hevey (CA4B662K73)</CodesignKey>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
@@ -50,7 +50,7 @@
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: glenn.hevey@gmail.com (CA4B662K73)</CodesignKey>
+    <CodesignKey>iPhone Developer: Glenn Hevey (CA4B662K73)</CodesignKey>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
@@ -153,6 +153,7 @@
     <Content Include="Library\TemplateFiles\Untitled.txt" />
     <Content Include="Library\TemplateFiles\Untitled.xlsx" />
     <Content Include="Library\TemplateFiles\Untitled.docx" />
+    <Content Include="Library\TemplateFiles\Untitled.Blank" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

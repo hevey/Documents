@@ -62,8 +62,7 @@ namespace Documents.iOS.Actions
                         blankExtensionAlert.PopoverPresentationController.SourceView = _view.View;
                         blankExtensionAlert.PopoverPresentationController.PermittedArrowDirections =
                             UIPopoverArrowDirection.Up;
-                        blankExtensionAlert.PopoverPresentationController.SourceRect =
-                            new CGRect(_view.View.Bounds.GetMidX(), _view.View.Bounds.GetMidY(), 0, 0);
+                        blankExtensionAlert.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.Right - 97.5, _view.View.Bounds.Top + 55, 0, 0);
                     }
 
 
