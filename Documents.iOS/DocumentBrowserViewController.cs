@@ -25,9 +25,10 @@ namespace Documents.iOS
             AllowsDocumentCreation = true;
             AllowsPickingMultipleItems = true;
             BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
+            CustomActions = SetupActions();
             AdditionalLeadingNavigationBarButtonItems = SetupLeadingButtons();
             Delegate = new DocumentBrowserViewControllerDelegate();
-            CustomActions = SetupActions();
+
 
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             

@@ -153,6 +153,7 @@
     <Content Include="Library\TemplateFiles\Untitled.txt" />
     <Content Include="Library\TemplateFiles\Untitled.xlsx" />
     <Content Include="Library\TemplateFiles\Untitled.docx" />
+    <Content Include="Library\TemplateFiles\Untitled.Blank" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
