@@ -150,6 +150,9 @@ namespace Documents.iOS.Delegates
         //Opened Exisiting Document
         public override void DidPickDocumentUrls(UIDocumentBrowserViewController controller, NSUrl[] documentUrls)
         {
+            var docController = UIDocumentInteractionController.FromUrl(documentUrls[0]);
+            docController.Delegate = new DocumentInteractionControllerDelegate(controller);
+            docController.PresentOptionsMenu(new CGRect(controller.View.Bounds.GetMidX(), controller.View.Bounds.GetMidY(), 0,0), controller.View, true);
 
         }
 
@@ -158,8 +161,6 @@ namespace Documents.iOS.Delegates
 		{
             
 		}
-
-
 
 		private void CancelPopup(UIAlertAction uiAlertAction)
         {
@@ -201,11 +202,10 @@ namespace Documents.iOS.Delegates
             CreateFile("docx");
         }
 
-        void CreateOther(UIAlertAction uiAlertAction)
+        private void CreateOther(UIAlertAction uiAlertAction)
         {
             CreateBlankFile();
         }
-
 
         private void CreateFile(string fileType)
         {
