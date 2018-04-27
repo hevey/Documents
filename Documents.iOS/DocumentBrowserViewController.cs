@@ -24,7 +24,7 @@ namespace Documents.iOS
 
             AllowsDocumentCreation = true;
             AllowsPickingMultipleItems = true;
-            BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
+            BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Light;
             CustomActions = SetupActions();
             AdditionalLeadingNavigationBarButtonItems = SetupLeadingButtons();
             Delegate = new DocumentBrowserViewControllerDelegate();
@@ -38,12 +38,6 @@ namespace Documents.iOS
             {
                 Directory.CreateDirectory(directoryname);
             }
-
-            //BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
-            //View.TintColor = UIColor.LightTextColor;
-           
-            
-
         }
 
 
