@@ -36,7 +36,7 @@ namespace Documents.iOS.Delegates
                 newItemPopOver.PopoverPresentationController.SourceView = controller.View;
                 newItemPopOver.PopoverPresentationController.PermittedArrowDirections =
                     UIPopoverArrowDirection.Up;
-                newItemPopOver.PopoverPresentationController.SourceRect = new CGRect(controller.View.Bounds.Right - 97.5, controller.View.Bounds.Top + 55 , 0, 0);
+                newItemPopOver.PopoverPresentationController.SourceRect = new CGRect(controller.View.Bounds.Right - 147.5, controller.View.Bounds.Top + 55 , 0, 0);
                 //newItemPopOver.PopoverPresentationController.BarButtonItem = controller.ChildViewControllers[0].NavigationItem.RightBarButtonItem;
             }
             
@@ -86,18 +86,16 @@ namespace Documents.iOS.Delegates
                     }
                     else
                     {
-                        var oakAlertController = UIAlertController.Create("Error", $"Filename can't be blank.", UIAlertControllerStyle.Alert);
-
-                        //Add Action
-                        oakAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
-
                         // Present Alert
                         _controller.PresentViewController(newFilenameAlert, true, null);
                     }
 
                 }));
 
-                newFilenameAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+                newFilenameAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel,(sender) => {
+                    File.Delete(destinationUrl.RelativePath);
+                }));
+
                 // Present Alert
                 _controller.PresentViewController(newFilenameAlert, true, null);
 
@@ -129,18 +127,15 @@ namespace Documents.iOS.Delegates
                     }
                     else
                     {
-                        var oakAlertController = UIAlertController.Create("Error", $"Filename can't be blank.", UIAlertControllerStyle.Alert);
-
-                        //Add Action
-                        oakAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
-
                         // Present Alert
                         _controller.PresentViewController(newFilenameAlert, true, null);
                     }
 
                 }));
 
-                newFilenameAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+                newFilenameAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (sender) => {
+                    File.Delete(destinationUrl.RelativePath);
+                }));
                 // Present Alert
                 _controller.PresentViewController(newFilenameAlert, true, null);
 
@@ -153,7 +148,7 @@ namespace Documents.iOS.Delegates
             var docController = UIDocumentInteractionController.FromUrl(documentUrls[0]);
 
             docController.Delegate = new DocumentInteractionControllerDelegate(controller);
-            docController.PresentOptionsMenu(new CGRect(controller.View.Bounds.Right - 97.5, controller.View.Bounds.Top + 55, 0, 0), controller.View, true);
+            docController.PresentOptionsMenu(new CGRect(controller.View.Bounds.Right - 147.5, controller.View.Bounds.Top + 55, 0, 0), controller.View, true);
 
         }
 

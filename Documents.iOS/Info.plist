@@ -34,8 +34,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UISupportsDocumentBrowser</key>
 	<true/>
 	<key>CFBundleDocumentTypes</key>
@@ -53,5 +51,7 @@
 			<string>Editor</string>
 		</dict>
 	</array>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIconPurple.appiconset</string>
 </dict>
 </plist>
