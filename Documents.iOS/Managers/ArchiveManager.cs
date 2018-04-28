@@ -119,7 +119,7 @@ namespace Documents.iOS.Managers
                     while (reader.MoveToNextEntry())
                     {
                         if (!reader.Entry.IsDirectory)
-                            reader.WriteEntryToDirectory(extractLocation, new ExtractionOptions() { ExtractFullPath = false, Overwrite = true });
+                            reader.WriteEntryToDirectory(extractLocation, new ExtractionOptions() { ExtractFullPath = false, Overwrite = overwrite });
                     }
                 }
             //}
