@@ -14,8 +14,9 @@ namespace Documents.iOS.Buttons
         
         public UIBarButtonItem SetUiBarButtonItem()
         {
+            var image = UIImage.FromBundle("SettingsIcon");
             var button = new UIBarButtonItem();
-            button.Title = "\u2699";
+            button.Image = image;
             button.Style = UIBarButtonItemStyle.Plain;
             button.Clicked += ClickedEvent;
             return button;

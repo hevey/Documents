@@ -129,6 +129,8 @@
     <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-76pt%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-83.5pt%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\iTunesArtwork%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SettingsIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SettingsIcon.imageset\Settings Icon.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Managers\" />
@@ -140,6 +142,7 @@
     <Folder Include="Assets.xcassets\AppIconFilesPurple.appiconset\" />
     <Folder Include="Assets.xcassets\AppIconPurple.appiconset\" />
     <Folder Include="Assets.xcassets\AppIconPurpleDark.appiconset\" />
+    <Folder Include="Assets.xcassets\SettingsIcon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

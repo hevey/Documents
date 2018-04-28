@@ -9,7 +9,7 @@ namespace Documents.iOS.Managers
         public List<IUIBarButtonItem> GetButtons(UIViewController viewController)
         {
             return new List<IUIBarButtonItem>() {
-                new NewItemBarButton(viewController)
+                new SettingsBarButton(viewController)
             };
         }
     }
