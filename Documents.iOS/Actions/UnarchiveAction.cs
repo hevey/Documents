@@ -22,7 +22,7 @@ namespace Documents.iOS.Actions
         public UIDocumentBrowserAction SetupAction()
         {
             var unarchiveExt = new UIDocumentBrowserAction("com.glennhevey.unarchive", "Extract", UIDocumentBrowserActionAvailability.Menu, Action);
-            unarchiveExt.SupportedContentTypes = new string[] { "public.archive" };
+            unarchiveExt.SupportedContentTypes = new string[] { "public.archive", "public.rar" };
             return unarchiveExt;
         }
 
@@ -82,62 +82,70 @@ namespace Documents.iOS.Actions
 
         private void Unarchive(UIAlertAction action, UnarchiveLocationEnum location, string filePath, string folderToSave = "")
         {
-            var archiveManager = new ArchiveManager();
-            var okAlertController = UIAlertController.Create("Action", $"Folder or files exists, what would you like to do?", UIAlertControllerStyle.Alert);
-            var showAlert = false;
-            var folderLocation = archiveManager.DetermineExtractLocation(filePath, location, folderToSave);
-            if (location != UnarchiveLocationEnum.CurrentDirectory)
+            try
             {
-                var folderExists = CheckFolderLocation(folderLocation);
-                if (folderExists)
+                var archiveManager = new ArchiveManager();
+                var okAlertController = UIAlertController.Create("Action", $"Folder or files exists, what would you like to do?", UIAlertControllerStyle.Alert);
+                var showAlert = false;
+                var folderLocation = archiveManager.DetermineExtractLocation(filePath, location, folderToSave);
+                if (location != UnarchiveLocationEnum.CurrentDirectory)
                 {
-                    //Add Action
-                    okAlertController.AddAction(UIAlertAction.Create("Overwrite folder", UIAlertActionStyle.Default, (sender) =>
+                    var folderExists = CheckFolderLocation(folderLocation);
+                    if (folderExists)
                     {
-                        var bounds = UIScreen.MainScreen.Bounds;
-                        Func<Task> UnarchiveFunc = async () =>
+                        //Add Action
+                        okAlertController.AddAction(UIAlertAction.Create("Overwrite folder", UIAlertActionStyle.Default, (sender) =>
                         {
-                            var loadPop = new LoadingOverlay(bounds, "Deleting..."); // using field from step 2
+                            var bounds = UIScreen.MainScreen.Bounds;
+                            Func<Task> UnarchiveFunc = async () =>
+                            {
+                                var loadPop = new LoadingOverlay(bounds, "Deleting..."); // using field from step 2
                             _view.View.Add(loadPop);
-                            Directory.Delete(folderLocation, true);
-                            _view.View.SetNeedsDisplay();
+                                Directory.Delete(folderLocation, true);
+                                _view.View.SetNeedsDisplay();
                             //Needs to do this so folder is removed from display
                             await Task.Delay(2000);
-                            loadPop.Hide();
-                            PerformUnarchive(location, filePath, UnarchiveActionEnum.Overwrite, folderToSave);
-                        };
+                                loadPop.Hide();
+                                PerformUnarchive(location, filePath, UnarchiveActionEnum.Overwrite, folderToSave);
+                            };
 
-                        UnarchiveFunc();
-                    }));
+                            UnarchiveFunc();
+                        }));
+                        showAlert = true;
+                    }
+                }
+                if (archiveManager.CheckForArchiveFilesExists(filePath, location, folderToSave))
+                {
                     showAlert = true;
+                    okAlertController.AddAction(UIAlertAction.Create("Merge (overwrite existing files)", UIAlertActionStyle.Default, (sender) =>
+                    {
+                        PerformUnarchive(location, filePath, UnarchiveActionEnum.MergeWithOverwrite, folderToSave);
+                    }));
+
+                    okAlertController.AddAction(UIAlertAction.Create("Merge (keep existing files)", UIAlertActionStyle.Default, (sender) =>
+                    {
+                        PerformUnarchive(location, filePath, UnarchiveActionEnum.MergeWithoutOverwrite, folderToSave);
+                    }));
+
+                }
+
+                if (showAlert)
+                {
+                    // Present Alert
+                    okAlertController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+                    _view.PresentViewController(okAlertController, true, null);
+                }
+                else
+                {
+                    PerformUnarchive(location, filePath, UnarchiveActionEnum.Overwrite, folderToSave);
                 }
             }
-            if(archiveManager.CheckForArchiveFilesExists(filePath, location, folderToSave))
+            catch (Exception ex)
             {
-                showAlert = true;
-                okAlertController.AddAction(UIAlertAction.Create("Merge (overwrite existing files)", UIAlertActionStyle.Default, (sender) =>
-                {
-                    PerformUnarchive(location, filePath, UnarchiveActionEnum.MergeWithOverwrite, folderToSave);
-                }));
-
-                okAlertController.AddAction(UIAlertAction.Create("Merge (keep existing files)", UIAlertActionStyle.Default, (sender) =>
-                {
-                    PerformUnarchive(location, filePath, UnarchiveActionEnum.MergeWithoutOverwrite, folderToSave);
-                }));
-
+                var errorAlertController = UIAlertController.Create("Error", ex.Message, UIAlertControllerStyle.Alert);
+                errorAlertController.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                _view.PresentViewController(errorAlertController, true, null);
             }
-
-            if (showAlert)
-            {
-                // Present Alert
-                okAlertController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
-                _view.PresentViewController(okAlertController, true, null);
-            }
-            else
-            {
-                PerformUnarchive(location, filePath, UnarchiveActionEnum.Overwrite, folderToSave);
-            }
-
         }
 
         private void PerformUnarchive(UnarchiveLocationEnum location, string filePath, UnarchiveActionEnum action, string folderToSave = "")

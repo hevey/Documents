@@ -13,19 +13,58 @@ namespace Documents.iOS.Managers
 
         public bool CheckForArchiveFilesExists(string filePath, UnarchiveLocationEnum location, string folderToSave = "")
         {
+            //var archiveType = DetermineArchiveType(filePath);
+
             var collision = false;
             var extractLocation = DetermineExtractLocation(filePath, location, folderToSave);
+            collision = CheckForGenericFilesExists(filePath, extractLocation);
 
+            //switch (archiveType)
+            //{
+            //    case ArchiveTypeEnum.Zip:
+            //        collision = CheckForZipArchiveFilesExists(filePath, extractLocation);
+            //        break;
+            //    case ArchiveTypeEnum.Rar:
+            //    case ArchiveTypeEnum.SevenZip:
+            //    case ArchiveTypeEnum.Tar:
+            //    case ArchiveTypeEnum.GZip:
+            //        collision = CheckForGenericFilesExists(filePath, extractLocation);
+            //        break;
+            //}
+            return collision;
+        }
+
+        private bool CheckForGenericFilesExists(string filePath, string extractLocation)
+        {
+            var collision = false;
+            using (var archive = SharpCompress.Archives.ArchiveFactory.Open(filePath))
+            {
+                var reader = archive.ExtractAllEntries();
+                while (reader.MoveToNextEntry())
+                {
+                    var extractFilePath = Path.Combine(extractLocation, reader.Entry.Key);
+                    if ((Directory.Exists(extractFilePath) || File.Exists(extractFilePath)))
+                    {
+                        collision = true;
+                    }
+                }
+            }
+            return collision;
+        }
+
+        private static bool CheckForZipArchiveFilesExists(string filePath, string extractLocation)
+        {
+            var collision = false;
             using (var zip = ZipFile.OpenRead(filePath))
             {
                 foreach (var fe in zip.Entries)
                 {
-                    
-                        var extractFilePath = Path.Combine(extractLocation, fe.FullName);
-                        if((Directory.Exists(extractFilePath) || File.Exists(extractFilePath)))
-                        {
-                            collision = true;
-                        }
+
+                    var extractFilePath = Path.Combine(extractLocation, fe.FullName);
+                    if ((Directory.Exists(extractFilePath) || File.Exists(extractFilePath)))
+                    {
+                        collision = true;
+                    }
 
                 }
             }
@@ -35,23 +74,24 @@ namespace Documents.iOS.Managers
 
         public void UnarchiveFile(string filePath, UnarchiveLocationEnum location, UnarchiveActionEnum action, string folderToSave = "")
         {
-            var archiveType = DetermineArchiveType(filePath);
+            //var archiveType = DetermineArchiveType(filePath);
             var extractLocation = DetermineExtractLocation(filePath, location, folderToSave);
 
             CreateExtractLocation(location, extractLocation);
+            Unarchive(filePath, extractLocation, action);
 
-            switch (archiveType)
-            {
-                case ArchiveTypeEnum.Zip:
-                    UnarchiveZip(filePath, extractLocation, action);
-                    break;
-                case ArchiveTypeEnum.Rar:
-                case ArchiveTypeEnum.SevenZip:
-                case ArchiveTypeEnum.Tar:
-                case ArchiveTypeEnum.GZip:
-                    Unarchive(filePath, extractLocation, action);
-                    break;
-            }
+            //switch (archiveType)
+            //{
+            //    case ArchiveTypeEnum.Zip:
+            //        UnarchiveZip(filePath, extractLocation, action);
+            //        break;
+            //    case ArchiveTypeEnum.Rar:
+            //    case ArchiveTypeEnum.SevenZip:
+            //    case ArchiveTypeEnum.Tar:
+            //    case ArchiveTypeEnum.GZip:
+            //        Unarchive(filePath, extractLocation, action);
+            //        break;
+            //}
 
         }
 
@@ -69,17 +109,34 @@ namespace Documents.iOS.Managers
                     break;
 
             }
-            using (Stream stream = File.OpenRead(filePath))
-            {
-                var reader = ReaderFactory.Open(stream);
-                while (reader.MoveToNextEntry())
+            //var fileExt = Path.GetExtension(filePath);
+            //if (string.Equals(fileExt, ".7z", StringComparison.InvariantCultureIgnoreCase))
+            //{
+
+                using (var archive = SharpCompress.Archives.ArchiveFactory.Open(filePath))
                 {
-                    if (!reader.Entry.IsDirectory)
+                    var reader = archive.ExtractAllEntries();
+                    while (reader.MoveToNextEntry())
                     {
-                        reader.WriteEntryToDirectory(extractLocation, new ExtractionOptions() { ExtractFullPath = true, Overwrite = overwrite });
+                        if (!reader.Entry.IsDirectory)
+                            reader.WriteEntryToDirectory(extractLocation, new ExtractionOptions() { ExtractFullPath = false, Overwrite = true });
                     }
                 }
-            }
+            //}
+            //else
+            //{
+            //    using (Stream stream = File.OpenRead(filePath))
+            //    {
+            //        var reader = ReaderFactory.Open(stream);
+            //        while (reader.MoveToNextEntry())
+            //        {
+            //            if (!reader.Entry.IsDirectory)
+            //            {
+            //                reader.WriteEntryToDirectory(extractLocation, new ExtractionOptions() { ExtractFullPath = true, Overwrite = overwrite });
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         private void UnarchiveZip(string filePath, string extractLocation, UnarchiveActionEnum action)
@@ -94,11 +151,11 @@ namespace Documents.iOS.Managers
                 case UnarchiveActionEnum.MergeWithoutOverwrite:
                     overwrite = false;
                     break;
-                    
+
             }
-            using(var zip = ZipFile.OpenRead(filePath))
+            using (var zip = ZipFile.OpenRead(filePath))
             {
-                foreach(var fe in zip.Entries)
+                foreach (var fe in zip.Entries)
                 {
                     try
                     {
@@ -142,17 +199,25 @@ namespace Documents.iOS.Managers
             }
         }
 
-        private ArchiveTypeEnum DetermineArchiveType(string filePath)
-        {
-            var fileExt = System.IO.Path.GetExtension(filePath);
-            switch (fileExt.ToLower())
-            {
-                case ".zip":
-                    return ArchiveTypeEnum.Zip;
-                    break;
-                default:
-                    throw new Exception("Unsupported file type");
-            }
-        }
+        //private ArchiveTypeEnum DetermineArchiveType(string filePath)
+        //{
+        //    var fileExt = System.IO.Path.GetExtension(filePath);
+        //    switch (fileExt.ToLower())
+        //    {
+        //        case ".zip":
+        //            return ArchiveTypeEnum.Zip;
+        //        case ".7z":
+        //            return ArchiveTypeEnum.SevenZip;
+        //        case ".rar":
+        //            return ArchiveTypeEnum.Rar;
+        //        case ".tar":
+        //            return ArchiveTypeEnum.Tar;
+        //        case ".gz":
+        //        case ".bz2":
+        //            return ArchiveTypeEnum.GZip;
+        //        default:
+        //            throw new Exception("Unsupported file type");
+        //    }
+        //}
     }
 }
