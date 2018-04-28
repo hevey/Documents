@@ -131,6 +131,12 @@
     <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\iTunesArtwork%402x.png" />
     <ImageAsset Include="Assets.xcassets\SettingsIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SettingsIcon.imageset\Settings Icon.pdf" />
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-20pt%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-20pt%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-20pt%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-20pt%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-20pt%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-20pt%401x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Managers\" />
