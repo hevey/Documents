@@ -63,7 +63,7 @@ namespace Documents.iOS.Managers
                     break;
                 case ArchiveTypeEnum.Tar:
                     using (Stream stream = File.OpenWrite(archiveFilePath))
-                    using (var writer = WriterFactory.Open(stream, ArchiveType.Tar, CompressionType.BZip2))
+                    using (var writer = WriterFactory.Open(stream, ArchiveType.Tar, CompressionType.GZip))
                     {
                         foreach (var filePath in files)
                         {
