@@ -16,7 +16,9 @@ namespace Documents.iOS.Managers
 
             return new List<ICustomAction>() {
                 new UnarchiveAction(viewController),
-                new RenameWithExtension(viewController)
+                new RenameWithExtension(viewController),
+                new ArchiveMenuAction(viewController),
+                new ArchiveNavigationBarAction(viewController)
             };
         }
     }

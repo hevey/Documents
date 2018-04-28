@@ -147,20 +147,21 @@ namespace Documents.iOS.Delegates
             }
 		}
 
-        //Opened Exisiting Document
+        //Open Exisiting Document
         public override void DidPickDocumentUrls(UIDocumentBrowserViewController controller, NSUrl[] documentUrls)
         {
             var docController = UIDocumentInteractionController.FromUrl(documentUrls[0]);
+
             docController.Delegate = new DocumentInteractionControllerDelegate(controller);
-            docController.PresentOptionsMenu(new CGRect(controller.View.Bounds.GetMidX(), controller.View.Bounds.GetMidY(), 0,0), controller.View, true);
+            docController.PresentOptionsMenu(new CGRect(controller.View.Bounds.Right - 97.5, controller.View.Bounds.Top + 55, 0, 0), controller.View, true);
 
         }
 
         //Failed to create Document
 		public override void FailedToImportDocument(UIDocumentBrowserViewController controller, NSUrl documentUrl, NSError error)
-		{
+        {
             
-		}
+        }
 
 		private void CancelPopup(UIAlertAction uiAlertAction)
         {

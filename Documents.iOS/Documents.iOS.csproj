@@ -145,6 +145,8 @@
     <Compile Include="Utilities\LoadingOverlay.cs" />
     <Compile Include="Enums\UnarchiveActionEnum.cs" />
     <Compile Include="Delegates\DocumentInteractionControllerDelegate.cs" />
+    <Compile Include="Actions\ArchiveMenuAction.cs" />
+    <Compile Include="Actions\ArchiveNavigationBarAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\TemplateFiles\Untitled.key" />
