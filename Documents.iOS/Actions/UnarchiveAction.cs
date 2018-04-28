@@ -22,7 +22,7 @@ namespace Documents.iOS.Actions
         public UIDocumentBrowserAction SetupAction()
         {
             var unarchiveExt = new UIDocumentBrowserAction("com.glennhevey.unarchive", "Extract", UIDocumentBrowserActionAvailability.Menu, Action);
-            unarchiveExt.SupportedContentTypes = new string[] { "public.archive", "public.rar" };
+            unarchiveExt.SupportedContentTypes = new string[] { "public.archive", "public.rar", "public.7z" };
             return unarchiveExt;
         }
 
