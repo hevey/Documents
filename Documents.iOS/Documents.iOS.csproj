@@ -91,31 +91,18 @@
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60%403x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iTunesArtwork%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-83.5%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-29pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-29pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-29pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-40pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-40pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-60pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-60pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-40pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-76pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-76pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\Icon-83.5pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon-1.appiconset\iTunesArtwork%402x.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29pt%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29pt%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-40pt%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-40pt%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60pt%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60pt%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29pt%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-40pt%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76pt%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76pt%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-83.5pt%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Managers\" />
