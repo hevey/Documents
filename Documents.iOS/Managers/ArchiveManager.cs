@@ -2,7 +2,7 @@
 using Documents.iOS.Enums;
 using System.IO;
 using System.IO.Compression;
-
+using SharpCompress.Readers;
 namespace Documents.iOS.Managers
 {
     public class ArchiveManager
@@ -45,8 +45,41 @@ namespace Documents.iOS.Managers
                 case ArchiveTypeEnum.Zip:
                     UnarchiveZip(filePath, extractLocation, action);
                     break;
+                case ArchiveTypeEnum.Rar:
+                case ArchiveTypeEnum.SevenZip:
+                case ArchiveTypeEnum.Tar:
+                case ArchiveTypeEnum.GZip:
+                    Unarchive(filePath, extractLocation, action);
+                    break;
             }
 
+        }
+
+        private void Unarchive(string filePath, string extractLocation, UnarchiveActionEnum action)
+        {
+            var overwrite = false;
+            switch (action)
+            {
+                case UnarchiveActionEnum.MergeWithOverwrite:
+                case UnarchiveActionEnum.Overwrite:
+                    overwrite = true;
+                    break;
+                case UnarchiveActionEnum.MergeWithoutOverwrite:
+                    overwrite = false;
+                    break;
+
+            }
+            using (Stream stream = File.OpenRead(filePath))
+            {
+                var reader = ReaderFactory.Open(stream);
+                while (reader.MoveToNextEntry())
+                {
+                    if (!reader.Entry.IsDirectory)
+                    {
+                        reader.WriteEntryToDirectory(extractLocation, new ExtractionOptions() { ExtractFullPath = true, Overwrite = overwrite });
+                    }
+                }
+            }
         }
 
         private void UnarchiveZip(string filePath, string extractLocation, UnarchiveActionEnum action)

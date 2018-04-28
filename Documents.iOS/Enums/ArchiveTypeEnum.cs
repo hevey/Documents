@@ -3,6 +3,10 @@ namespace Documents.iOS.Enums
 {
     public enum ArchiveTypeEnum
     {
-        Zip
+        Zip,
+        Rar,
+        SevenZip,
+        Tar,
+        GZip
     }
 }
