@@ -5,6 +5,7 @@ using Documents.iOS.Managers;
 using System.Collections.Generic;
 using Documents.iOS.Buttons;
 using Documents.iOS.Delegates;
+using Foundation;
 
 namespace Documents.iOS
 {
@@ -15,8 +16,12 @@ namespace Documents.iOS
         {
             // Note: this .ctor should not contain any initialization logic.
         }
-        
-        
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            this.NavigationController.SetNavigationBarHidden(true, false);
+        }
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -74,5 +79,7 @@ namespace Documents.iOS
             }
             return list.ToArray();
         }
+
+       
     }
 }

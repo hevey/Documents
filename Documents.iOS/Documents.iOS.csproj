@@ -81,6 +81,9 @@
     <CodesignProvision>VS: com.glennhevey.Documents Development</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpCompress, Version=0.20.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpCompress.0.20.0\lib\netstandard2.0\SharpCompress.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -89,67 +92,287 @@
     <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-29pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-29pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-29pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-40pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-40pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-40pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-60pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-60pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-76pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-76pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-83.5pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\iTunesArtwork%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-29pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-29pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-29pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-40pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-40pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-40pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-60pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-60pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-76pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-76pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-83.5pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\iTunesArtwork%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-29pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-29pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-40pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-40pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-60pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-60pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-29pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-40pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-76pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-76pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-83.5pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\iTunesArtwork%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SettingsIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SettingsIcon.imageset\Settings Icon.pdf" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-20pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-20pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-20pt%401x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-20pt%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-20pt%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-20pt%401x.png" />
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-29pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-29pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-29pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-40pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-40pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-40pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-60pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-60pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-76pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-76pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-83.5pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\iTunesArtwork%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-29pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-29pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-29pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-40pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-40pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-40pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-60pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-60pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-76pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-76pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-83.5pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\iTunesArtwork%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-29pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-29pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-40pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-40pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-60pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-60pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-29pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-40pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-76pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-76pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-83.5pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\iTunesArtwork%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SettingsIcon.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SettingsIcon.imageset\Settings Icon.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-29pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-29pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-29pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-40pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-40pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-40pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-60pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-60pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-76pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-76pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\Icon-83.5pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconFilesPurple.appiconset\iTunesArtwork%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-29pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-29pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-29pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-40pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-40pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-40pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-60pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-60pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-76pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-76pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-83.5pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\iTunesArtwork%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-29pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-29pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-40pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-40pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-60pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-60pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-29pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-40pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-76pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-76pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-83.5pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\iTunesArtwork%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SettingsIcon.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SettingsIcon.imageset\Settings Icon.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-20pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-20pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurple.appiconset\Icon-20pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-20pt%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-20pt%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIconPurpleDark.appiconset\Icon-20pt%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Managers\" />
-    <Folder Include="Enums\" />
-    <Folder Include="Actions\" />
-    <Folder Include="Utilities\" />
-    <Folder Include="Library\" />
-    <Folder Include="Library\TemplateFiles\" />
     <Folder Include="Assets.xcassets\AppIconFilesPurple.appiconset\" />
     <Folder Include="Assets.xcassets\AppIconPurple.appiconset\" />
     <Folder Include="Assets.xcassets\AppIconPurpleDark.appiconset\" />
     <Folder Include="Assets.xcassets\SettingsIcon.imageset\" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <InterfaceDefinition Include="Main.storyboard" />
@@ -180,12 +403,16 @@
     <Compile Include="Actions\RenameWithExtension.cs" />
     <Compile Include="Managers\IUIBarButtonManager.cs" />
     <Compile Include="Managers\LeadingUIBarButtonManager.cs" />
+    <Compile Include="Managers\LicenseManager.cs" />
     <Compile Include="Managers\TrailingUIBarButtonManager.cs" />
+    <Compile Include="Models\LicenseDetails.cs" />
+    <Compile Include="SettingsTableViewController.cs" />
     <Compile Include="Utilities\LoadingOverlay.cs" />
     <Compile Include="Enums\UnarchiveActionEnum.cs" />
     <Compile Include="Delegates\DocumentInteractionControllerDelegate.cs" />
     <Compile Include="Actions\ArchiveMenuAction.cs" />
     <Compile Include="Actions\ArchiveNavigationBarAction.cs" />
+    <Compile Include="Utilities\SettingsDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\TemplateFiles\Untitled.key" />
@@ -196,6 +423,9 @@
     <Content Include="Library\TemplateFiles\Untitled.xlsx" />
     <Content Include="Library\TemplateFiles\Untitled.docx" />
     <Content Include="Library\TemplateFiles\Untitled.Blank" />
+    <Content Include="Licenses\SharpCompress.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

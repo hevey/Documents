@@ -24,7 +24,7 @@ namespace Documents.iOS.Buttons
 
         public void ClickedEvent(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            _view.PerformSegue("ToSettings", _view);
         }
     }
 }

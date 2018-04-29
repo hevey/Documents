@@ -1,55 +1,110 @@
 ﻿using System;
 using Documents.iOS.Enums;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-
+using SharpCompress.Readers;
+using SharpCompress.Writers;
+using SharpCompress.Common;
 namespace Documents.iOS.Managers
 {
     public class ArchiveManager
     {
-        public ArchiveManager()
-        {
-        }
 
         public bool CheckForArchiveFilesExists(string filePath, UnarchiveLocationEnum location, string folderToSave = "")
         {
             var collision = false;
             var extractLocation = DetermineExtractLocation(filePath, location, folderToSave);
+            collision = CheckForGenericFilesExists(filePath, extractLocation);
+            return collision;
+        }
 
-            using (var zip = ZipFile.OpenRead(filePath))
+        private bool CheckForGenericFilesExists(string filePath, string extractLocation)
+        {
+            var collision = false;
+            using (var archive = SharpCompress.Archives.ArchiveFactory.Open(filePath))
             {
-                foreach (var fe in zip.Entries)
+                var reader = archive.ExtractAllEntries();
+                while (reader.MoveToNextEntry())
                 {
-                    
-                        var extractFilePath = Path.Combine(extractLocation, fe.FullName);
-                        if((Directory.Exists(extractFilePath) || File.Exists(extractFilePath)))
-                        {
-                            collision = true;
-                        }
-
+                    var extractFilePath = Path.Combine(extractLocation, reader.Entry.Key);
+                    if ((Directory.Exists(extractFilePath) || File.Exists(extractFilePath)))
+                    {
+                        collision = true;
+                    }
                 }
             }
-
             return collision;
+        }
+
+        public void ArchiveFiles(IEnumerable<string> files, ArchiveTypeEnum type, string archiveFilePath)
+        {
+            switch (type)
+            {
+                case ArchiveTypeEnum.Zip:
+                    using (var zip = File.OpenWrite(archiveFilePath))
+                    using (var zipWriter = WriterFactory.Open(zip, ArchiveType.Zip, CompressionType.Deflate))
+                    {
+                        foreach (var filePath in files)
+                        {
+                            if (Directory.Exists(filePath))
+                            {
+                                zipWriter.WriteAll(filePath, "*", SearchOption.AllDirectories);
+                            }
+                            else
+                            {
+                                zipWriter.Write(Path.GetFileName(filePath), filePath);
+                            }
+                        }
+                    }
+                    break;
+                case ArchiveTypeEnum.GZip:
+                    using (Stream stream = File.OpenWrite(archiveFilePath))
+                    using (var writer = WriterFactory.Open(stream, ArchiveType.GZip, CompressionType.GZip))
+                    {
+                        foreach (var filePath in files)
+                        {
+                            if (Directory.Exists(filePath))
+                            {
+                                writer.WriteAll(filePath, "*", SearchOption.AllDirectories);
+                            }
+                            else
+                            {
+                                writer.Write(Path.GetFileName(filePath), filePath);
+                            }
+                        }
+                    }
+                    break;
+                case ArchiveTypeEnum.Tar:
+                    using (Stream stream = File.OpenWrite(archiveFilePath))
+                    using (var writer = WriterFactory.Open(stream, ArchiveType.Tar, CompressionType.GZip))
+                    {
+                        foreach (var filePath in files)
+                        {
+                            if (Directory.Exists(filePath))
+                            {
+                                writer.WriteAll(filePath, "*", SearchOption.AllDirectories);
+                            }
+                            else
+                            {
+                                writer.Write(Path.GetFileName(filePath), filePath);
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    throw new Exception("Unsupported archive type");
+            }
         }
 
         public void UnarchiveFile(string filePath, UnarchiveLocationEnum location, UnarchiveActionEnum action, string folderToSave = "")
         {
-            var archiveType = DetermineArchiveType(filePath);
             var extractLocation = DetermineExtractLocation(filePath, location, folderToSave);
-
             CreateExtractLocation(location, extractLocation);
-
-            switch (archiveType)
-            {
-                case ArchiveTypeEnum.Zip:
-                    UnarchiveZip(filePath, extractLocation, action);
-                    break;
-            }
-
+            Unarchive(filePath, extractLocation, action);
         }
 
-        private void UnarchiveZip(string filePath, string extractLocation, UnarchiveActionEnum action)
+        private void Unarchive(string filePath, string extractLocation, UnarchiveActionEnum action)
         {
             var overwrite = false;
             switch (action)
@@ -61,22 +116,15 @@ namespace Documents.iOS.Managers
                 case UnarchiveActionEnum.MergeWithoutOverwrite:
                     overwrite = false;
                     break;
-                    
+
             }
-            using(var zip = ZipFile.OpenRead(filePath))
+            using (var archive = SharpCompress.Archives.ArchiveFactory.Open(filePath))
             {
-                foreach(var fe in zip.Entries)
+                var reader = archive.ExtractAllEntries();
+                while (reader.MoveToNextEntry())
                 {
-                    try
-                    {
-                        var extractFilePath = Path.Combine(extractLocation, fe.FullName);
-                        fe.ExtractToFile(extractFilePath, overwrite);
-                    }
-                    catch (IOException ex)
-                    {
-                        var a = ex;
-                        //Catching as dont care :)   
-                    }
+                    if (!reader.Entry.IsDirectory)
+                        reader.WriteEntryToDirectory(extractLocation, new ExtractionOptions() { ExtractFullPath = true, Overwrite = overwrite, PreserveFileTime = true });
                 }
             }
         }
@@ -106,19 +154,6 @@ namespace Documents.iOS.Managers
                 {
                     Directory.CreateDirectory(extractLocation);
                 }
-            }
-        }
-
-        private ArchiveTypeEnum DetermineArchiveType(string filePath)
-        {
-            var fileExt = System.IO.Path.GetExtension(filePath);
-            switch (fileExt.ToLower())
-            {
-                case ".zip":
-                    return ArchiveTypeEnum.Zip;
-                    break;
-                default:
-                    throw new Exception("Unsupported file type");
             }
         }
     }
