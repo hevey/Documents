@@ -367,12 +367,6 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Managers\" />
-    <Folder Include="Enums\" />
-    <Folder Include="Actions\" />
-    <Folder Include="Utilities\" />
-    <Folder Include="Library\" />
-    <Folder Include="Library\TemplateFiles\" />
     <Folder Include="Assets.xcassets\AppIconFilesPurple.appiconset\" />
     <Folder Include="Assets.xcassets\AppIconPurple.appiconset\" />
     <Folder Include="Assets.xcassets\AppIconPurpleDark.appiconset\" />
@@ -409,12 +403,16 @@
     <Compile Include="Actions\RenameWithExtension.cs" />
     <Compile Include="Managers\IUIBarButtonManager.cs" />
     <Compile Include="Managers\LeadingUIBarButtonManager.cs" />
+    <Compile Include="Managers\LicenseManager.cs" />
     <Compile Include="Managers\TrailingUIBarButtonManager.cs" />
+    <Compile Include="Models\LicenseDetails.cs" />
+    <Compile Include="SettingsTableViewController.cs" />
     <Compile Include="Utilities\LoadingOverlay.cs" />
     <Compile Include="Enums\UnarchiveActionEnum.cs" />
     <Compile Include="Delegates\DocumentInteractionControllerDelegate.cs" />
     <Compile Include="Actions\ArchiveMenuAction.cs" />
     <Compile Include="Actions\ArchiveNavigationBarAction.cs" />
+    <Compile Include="Utilities\SettingsDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\TemplateFiles\Untitled.key" />
@@ -425,6 +423,9 @@
     <Content Include="Library\TemplateFiles\Untitled.xlsx" />
     <Content Include="Library\TemplateFiles\Untitled.docx" />
     <Content Include="Library\TemplateFiles\Untitled.Blank" />
+    <Content Include="Licenses\SharpCompress.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
