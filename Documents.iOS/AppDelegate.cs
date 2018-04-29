@@ -1,4 +1,6 @@
-﻿using Foundation;
+﻿using System;
+using System.IO;
+using Foundation;
 using UIKit;
 
 namespace Documents.iOS
@@ -53,6 +55,39 @@ namespace Documents.iOS
         public override void WillTerminate(UIApplication application)
         {
             // Called when the application is about to terminate. Save data, if needed. See also DidEnterBackground.
+        }
+
+		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+        {
+            // custom stuff here using different properties of the url passed in
+            var documentBrowser = Window.RootViewController as DocumentBrowserViewController;
+
+            if (documentBrowser != null)
+            {
+
+
+
+                var storyboard = UIStoryboard.FromName("Main", null);
+
+                if (storyboard != null)
+                {
+                    var viewController = storyboard.InstantiateViewController("ImportView");
+
+                    if (viewController != null)
+                    {
+                        documentBrowser.PresentViewController(viewController, true, null);
+                    }
+                }
+
+
+                var location = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                var filename = Path.GetFileName(url.Path);
+
+                File.Copy(url.Path, Path.Combine(location, filename));
+            }
+
+            return true;
         }
     }
 }
