@@ -28,6 +28,7 @@ namespace Documents.iOS.Actions
 
             renameAlertContoller.AddAction(UIAlertAction.Create("Rename", UIAlertActionStyle.Default, (sender) =>
             {
+                var oldName = Path.GetFileName(obj[0].Path);
                 var newName = renameAlertContoller.TextFields.First().Text;
 
                 if (newName == "")
@@ -41,20 +42,25 @@ namespace Documents.iOS.Actions
                     // Present Alert
                     _view.PresentViewController(blankAlertController, true, null);
                 }
-                else if (!newName.Contains("."))
+                else if (!newName.Contains(".") && oldName.Contains("."))
                 {
                     var blankExtensionAlert = UIAlertController.Create("Extension Missing",
                         $"No Extension was given. Do you want to use the previous extension ({previousExtension}) or leave it blank?",
                         UIAlertControllerStyle.ActionSheet);
 
-                    blankExtensionAlert.AddAction(UIAlertAction.Create("Blank", UIAlertActionStyle.Default,
-                        (sen) => { Console.WriteLine($"New Name: {newName}"); }));
+                    blankExtensionAlert.AddAction(UIAlertAction.Create("Blank", UIAlertActionStyle.Default, (sen) =>
+                    {
+                        File.Move(obj[0].Path, $"{Path.Combine(Path.GetDirectoryName(obj[0].Path), newName)}");
+                    }));
 
                     blankExtensionAlert.AddAction(UIAlertAction.Create($"{previousExtension}",
                         UIAlertActionStyle.Default, (sen) =>
                         {
-                            newName += $".{previousExtension}";
+                            newName += $"{previousExtension}";
+
+                            File.Move(obj[0].Path, $"{Path.Combine(Path.GetDirectoryName(obj[0].Path), newName)}");
                         }));
+
 
                     if (blankExtensionAlert.PopoverPresentationController != null)
                     {
@@ -62,15 +68,16 @@ namespace Documents.iOS.Actions
                         blankExtensionAlert.PopoverPresentationController.SourceView = _view.View;
                         blankExtensionAlert.PopoverPresentationController.PermittedArrowDirections =
                             UIPopoverArrowDirection.Up;
-                        blankExtensionAlert.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.Right - 97.5, _view.View.Bounds.Top + 55, 0, 0);
+                        blankExtensionAlert.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.Right - 147.5, _view.View.Bounds.Top + 55, 0, 0);
                     }
 
 
                     _view.PresentViewController(blankExtensionAlert, true, null);
                 }
-                
-
-                File.Move(obj[0].Path, $"{Path.Combine(Path.GetDirectoryName(obj[0].Path),newName)}");
+                else 
+                {
+                    File.Move(obj[0].Path, $"{Path.Combine(Path.GetDirectoryName(obj[0].Path), newName)}");
+                }
             }));
 
             renameAlertContoller.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (sender) => { }));
