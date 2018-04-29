@@ -7,6 +7,7 @@ using System.IO;
 using Documents.iOS.Managers;
 using System.Linq;
 using Documents.iOS.Utilities;
+using CoreGraphics;
 namespace Documents.iOS.Actions
 {
     public class ArchiveMenuAction : ICustomAction
@@ -27,6 +28,12 @@ namespace Documents.iOS.Actions
             archiveController.AddAction(UIAlertAction.Create("Tar", UIAlertActionStyle.Default, (actionParam) => Archive(files, ArchiveTypeEnum.Tar)));
             archiveController.AddAction(UIAlertAction.Create("GZip", UIAlertActionStyle.Default, (actionParam) => Archive(files, ArchiveTypeEnum.GZip)));
             archiveController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+
+            if (archiveController.PopoverPresentationController != null)
+            {
+                archiveController.PopoverPresentationController.SourceView = _view.View;
+                archiveController.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.GetMidX(), _view.View.Bounds.GetMidY(), 0, 0);
+            }
 
             _view.PresentViewController(archiveController, true, null);
         }
