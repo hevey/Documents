@@ -47,7 +47,14 @@ namespace Documents.iOS.Managers
                     {
                         foreach (var filePath in files)
                         {
-                            zipWriter.Write(Path.GetFileName(filePath), filePath);
+                            if (Directory.Exists(filePath))
+                            {
+                                zipWriter.WriteAll(filePath, "*", SearchOption.AllDirectories);
+                            }
+                            else
+                            {
+                                zipWriter.Write(Path.GetFileName(filePath), filePath);
+                            }
                         }
                     }
                     break;
@@ -57,7 +64,14 @@ namespace Documents.iOS.Managers
                     {
                         foreach (var filePath in files)
                         {
-                            writer.Write(Path.GetFileName(filePath), filePath);
+                            if (Directory.Exists(filePath))
+                            {
+                                writer.WriteAll(filePath, "*", SearchOption.AllDirectories);
+                            }
+                            else
+                            {
+                                writer.Write(Path.GetFileName(filePath), filePath);
+                            }
                         }
                     }
                     break;
@@ -67,7 +81,14 @@ namespace Documents.iOS.Managers
                     {
                         foreach (var filePath in files)
                         {
-                            writer.Write(Path.GetFileName(filePath), filePath);
+                            if (Directory.Exists(filePath))
+                            {
+                                writer.WriteAll(filePath, "*", SearchOption.AllDirectories);
+                            }
+                            else
+                            {
+                                writer.Write(Path.GetFileName(filePath), filePath);
+                            }
                         }
                     }
                     break;

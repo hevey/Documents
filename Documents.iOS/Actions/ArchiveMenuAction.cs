@@ -37,17 +37,7 @@ namespace Documents.iOS.Actions
 
             foreach (var url in urls)
             {
-                if (File.Exists(url.Path))
-                {
-                    files.Add(url.Path);
-                }
-                else if (Directory.Exists(url.Path))
-                {
-                    foreach (var file in Directory.GetFiles(url.Path, "*", SearchOption.AllDirectories))
-                    {
-                        files.Add(file);
-                    }
-                }
+                files.Add(url.Path);
             }
 
             return files;
