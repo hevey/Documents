@@ -74,11 +74,11 @@ namespace Documents.iOS
 
             documentBrowser.PresentViewController(viewController, true, null);
 
-            var location = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            //var location = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            var filename = Path.GetFileName(url.Path);
+            //var filename = Path.GetFileName(url.Path);
 
-            File.Copy(url.Path, Path.Combine(location, filename));
+            //File.Copy(url.Path, Path.Combine(location, filename));
             
 
             return true;

@@ -17,5 +17,10 @@ namespace Documents.iOS
             this.Title = "Import";
             this.TableView.RowHeight = UITableView.AutomaticDimension;
         }
+
+        partial void CancelButton_Activated(UIBarButtonItem sender)
+        {
+            this.DismissViewController(true, null);                                       
+        }
     }
 }

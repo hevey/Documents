@@ -14,5 +14,8 @@ namespace Documents.iOS
     [Register ("ImportNavigationViewController")]
     partial class ImportNavigationViewController
     {
+        void ReleaseDesignerOutlets ()
+        {
+        }
     }
 }
