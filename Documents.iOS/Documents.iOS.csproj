@@ -406,13 +406,24 @@
     <Compile Include="Managers\LicenseManager.cs" />
     <Compile Include="Managers\TrailingUIBarButtonManager.cs" />
     <Compile Include="Models\LicenseDetails.cs" />
-    <Compile Include="SettingsTableViewController.cs" />
     <Compile Include="Utilities\LoadingOverlay.cs" />
     <Compile Include="Enums\UnarchiveActionEnum.cs" />
     <Compile Include="Delegates\DocumentInteractionControllerDelegate.cs" />
     <Compile Include="Actions\ArchiveMenuAction.cs" />
     <Compile Include="Actions\ArchiveNavigationBarAction.cs" />
     <Compile Include="Utilities\SettingsDataSource.cs" />
+    <Compile Include="SettingsViewController.cs" />
+    <Compile Include="SettingsViewController.designer.cs">
+      <DependentUpon>SettingsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImportNavigationViewController.cs" />
+    <Compile Include="ImportNavigationViewController.designer.cs">
+      <DependentUpon>ImportNavigationViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImportTableViewController.cs" />
+    <Compile Include="ImportTableViewController.designer.cs">
+      <DependentUpon>ImportTableViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\TemplateFiles\Untitled.key" />

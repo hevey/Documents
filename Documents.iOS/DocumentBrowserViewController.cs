@@ -17,11 +17,6 @@ namespace Documents.iOS
             // Note: this .ctor should not contain any initialization logic.
         }
 
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
-            this.NavigationController.SetNavigationBarHidden(true, false);
-        }
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();

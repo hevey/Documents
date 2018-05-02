@@ -7,11 +7,12 @@
 using Foundation;
 using System;
 using System.CodeDom.Compiler;
+using UIKit;
 
 namespace Documents.iOS
 {
-    [Register ("SettingsTableViewController")]
-    partial class SettingsTableViewController
+    [Register ("SettingsViewController")]
+    partial class SettingsViewController
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]

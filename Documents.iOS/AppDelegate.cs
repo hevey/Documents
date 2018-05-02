@@ -62,30 +62,24 @@ namespace Documents.iOS
             // custom stuff here using different properties of the url passed in
             var documentBrowser = Window.RootViewController as DocumentBrowserViewController;
 
-            if (documentBrowser != null)
-            {
+            if (documentBrowser == null)
+                return false;
 
+            var storyboard = UIStoryboard.FromName("Main", null);
 
+            if (storyboard == null)
+                return false;
 
-                var storyboard = UIStoryboard.FromName("Main", null);
+            var viewController = storyboard.InstantiateViewController("Import");
 
-                if (storyboard != null)
-                {
-                    var viewController = storyboard.InstantiateViewController("ImportView");
+            documentBrowser.PresentViewController(viewController, true, null);
 
-                    if (viewController != null)
-                    {
-                        documentBrowser.PresentViewController(viewController, true, null);
-                    }
-                }
+            var location = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
+            var filename = Path.GetFileName(url.Path);
 
-                var location = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-                var filename = Path.GetFileName(url.Path);
-
-                File.Copy(url.Path, Path.Combine(location, filename));
-            }
+            File.Copy(url.Path, Path.Combine(location, filename));
+            
 
             return true;
         }
