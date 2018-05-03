@@ -424,6 +424,7 @@
     <Compile Include="ImportTableViewController.designer.cs">
       <DependentUpon>ImportTableViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\ImportDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\TemplateFiles\Untitled.key" />

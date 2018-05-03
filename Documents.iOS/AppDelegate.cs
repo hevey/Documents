@@ -71,14 +71,6 @@ namespace Documents.iOS
                 return false;
 
             var viewController = storyboard.InstantiateViewController("Import");
-
-            documentBrowser.PresentViewController(viewController, true, null);
-
-            var location = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            var filename = Path.GetFileName(url.Path);
-
-            File.Copy(url.Path, Path.Combine(location, filename));
             
 
             return true;

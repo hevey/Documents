@@ -8,14 +8,17 @@ namespace Documents.iOS
     {
         public ImportTableViewController (IntPtr handle) : base (handle)
         {
+            
         }
 
+        public override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
+        }
+         
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            this.NavigationController.SetNavigationBarHidden(false, false);
-            this.Title = "Import";
-            this.TableView.RowHeight = UITableView.AutomaticDimension;
         }
     }
 }
