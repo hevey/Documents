@@ -20,5 +20,10 @@ namespace Documents.iOS
         {
             base.ViewWillAppear(animated);
         }
+
+        partial void CancelButton_Activated(UIBarButtonItem sender)
+        {
+            this.DismissViewController(true, null);                                       
+        }
     }
 }

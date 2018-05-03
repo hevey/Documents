@@ -121,7 +121,16 @@
                             <outlet property="delegate" destination="3587" id="3591"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="3588"/>
+                    <navigationItem key="navigationItem" title="Import" id="3588">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="3814">
+                            <connections>
+                                <action selector="CancelButton_Activated:" destination="3587" id="3815"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="CancelButton" destination="3814" id="name-outlet-3814"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3594" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
