@@ -2,21 +2,57 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Foundation;
+using UIKit;
 
 namespace Documents.iOS.Utilities
 {
-    public class ImportDataSource
+    public class ImportDataSource: UITableViewSource
     {
+        string[] TableItems;
+        string CellIdentifier = "ImportCellIdentifier";
+
         public ImportDataSource()
         {
+            TableItems = GetDirectories();
         }
 
 
-        public List<string> GetDirectories() 
+        public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            var directories = Directory.GetDirectories(Environment.SpecialFolder.MyDocuments.ToString(), "*", SearchOption.AllDirectories).ToList();
+            UITableViewCell cell = tableView.DequeueReusableCell(CellIdentifier);
+            string item = TableItems[indexPath.Row];
 
-            return directories;
+            //---- if there are no cells to reuse, create a new one
+            if (cell == null)
+            { cell = new UITableViewCell(UITableViewCellStyle.Default, CellIdentifier); }
+
+            cell.TextLabel.Text = Path.GetFileName(item);
+
+            return cell;
         }
+
+        public override nint RowsInSection(UITableView tableview, nint section)
+        {
+            return TableItems.Length;
+        }
+
+        public string[] GetDirectories()
+        {
+            var allDirectories = Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "*", SearchOption.AllDirectories).ToList();
+
+            for (int i = allDirectories.Count - 1; i >= 0; i--)
+            {
+                var directoryName = Path.GetFileName(allDirectories[i]);
+                if (directoryName == ".Trash" || directoryName == "Inbox")
+                {
+                    allDirectories.RemoveAt(i);
+                }
+            }
+
+            return allDirectories.ToArray();
+        }
+
+
     }
 }

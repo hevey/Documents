@@ -1,5 +1,7 @@
+using Documents.iOS.Utilities;
 using Foundation;
 using System;
+using System.Collections.Generic;
 using UIKit;
 
 namespace Documents.iOS
@@ -14,6 +16,7 @@ namespace Documents.iOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            this.TableView.Source = new ImportDataSource();
         }
          
         public override void ViewWillAppear(bool animated)
