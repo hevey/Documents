@@ -27,7 +27,12 @@ namespace Documents.iOS.Utilities
             if (cell == null)
             { cell = new UITableViewCell(UITableViewCellStyle.Default, CellIdentifier); }
 
-            cell.TextLabel.Text = Path.GetFileName(item);
+            var fullPath = new Uri(item);
+            var relativeRoot = new Uri($"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\");
+
+            var relativePath = relativeRoot.MakeRelativeUri(fullPath);
+
+            cell.TextLabel.Text = relativePath.ToString();
 
             return cell;
         }
@@ -40,6 +45,7 @@ namespace Documents.iOS.Utilities
         public string[] GetDirectories()
         {
             var allDirectories = Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "*", SearchOption.AllDirectories).ToList();
+
 
             for (int i = allDirectories.Count - 1; i >= 0; i--)
             {
