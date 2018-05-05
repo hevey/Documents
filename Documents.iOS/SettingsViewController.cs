@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Documents.iOS.Managers;
 using Documents.iOS.Utilities;
 using Foundation;
+using System;
 using UIKit;
-using Documents.iOS.Managers;
+
 namespace Documents.iOS
 {
-    [Register("SettingsTableViewController", false)]
-    public class SettingsTableViewController : UITableViewController
+    public partial class SettingsViewController : UITableViewController
     {
         private LicenseManager _licenseManager;
-        public SettingsTableViewController(IntPtr handle) : base(handle)
+
+        public SettingsViewController (IntPtr handle) : base (handle)
         {
             _licenseManager = new LicenseManager();
         }
@@ -23,6 +21,7 @@ namespace Documents.iOS
             string[] tableItems = new string[] { };
             this.TableView.Source = new SettingsDataSource(_licenseManager.GetLicenseDetails());
         }
+
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
@@ -30,6 +29,11 @@ namespace Documents.iOS
             this.Title = "Settings";
             this.TableView.RowHeight = UITableView.AutomaticDimension;
             this.TableView.EstimatedRowHeight = 40f;
+        }
+
+        partial void CloseButton_Activated(UIBarButtonItem sender)
+        {
+            this.DismissViewController(true, null);
         }
     }
 }

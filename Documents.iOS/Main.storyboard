@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1534">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -11,29 +11,27 @@
         <!--Document Browser View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="DocumentBrowserViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="DocumentBrowserViewController" sceneMemberID="viewController" title="Document Browser">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <connections>
-                        <segue id="613" destination="223" kind="show" identifier="ToSettings"/>
-                    </connections>
+                    <connections/>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <exit id="314" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-209" y="-127"/>
+            <point key="canvasLocation" x="-567" y="-102"/>
         </scene>
         <scene sceneID="222">
             <objects>
-                <tableViewController id="223" sceneMemberID="viewController" customClass="SettingsTableViewController">
+                <tableViewController id="223" sceneMemberID="viewController" customClass="SettingsViewController" title="Settings Table View">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="224">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -68,25 +66,104 @@
                             <outlet property="delegate" destination="223" id="226"/>
                         </connections>
                     </tableView>
+                    <navigationItem title="Title" id="2345" key="navigationItem">
+                        <barButtonItem key="leftBarButtonItem" title="Close" id="3164" width="59.5">
+                            <connections>
+                                <action selector="CloseButton_Activated:" destination="3166" id="3165"/>
+                                <action selector="CloseButton_Activated:" destination="223" id="3369"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="CloseButton" destination="3164" id="name-outlet-3164"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="229" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="289" y="-116"/>
+            <point key="canvasLocation" x="290" y="-101"/>
         </scene>
         <scene sceneID="1533">
             <objects>
-                <navigationController id="1534" sceneMemberID="viewController">
+                <navigationController id="1534" sceneMemberID="viewController" storyboardIdentifier="Settings" title="Settings Navigation">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1536">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue id="1646" destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController"/>
+                        <segue id="2346" destination="223" kind="relationship" relationship="rootViewController"/>
                     </connections>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1537" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-736" y="-103"/>
+            <point key="canvasLocation" x="-143" y="-101"/>
+        </scene>
+        <scene sceneID="3586">
+            <objects>
+                <tableViewController id="3587" sceneMemberID="viewController" title="Import" customClass="ImportTableViewController" storyboardIdentifier="ImportTableView">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="3589">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="3592">
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3592" id="3593">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="3587" id="3590"/>
+                            <outlet property="delegate" destination="3587" id="3591"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Import" id="3588">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="3814">
+                            <connections>
+                                <action selector="CancelButton_Activated:" destination="3587" id="3815"/>
+                            </connections>
+                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Save" id="5674" enabled="NO">
+                                <connections>
+                                    <action selector="SaveButton_Activated:" destination="3587" id="5675"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="New Folder" id="7539" enabled="NO">
+                                <connections>
+                                    <action selector="NewFolderButton_Activated:" destination="3587" id="7550"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="CancelButton" destination="3814" id="name-outlet-3814"/>
+                        <outlet property="SaveButton" destination="5674" id="name-outlet-5674"/>
+                        <outlet property="NewFolderButton" destination="7539" id="name-outlet-7539"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3594" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-146" y="553"/>
+        </scene>
+        <scene sceneID="3595">
+            <objects>
+                <navigationController id="3596" sceneMemberID="viewController" customClass="ImportNavigationViewController" storyboardIdentifier="Import" title="Import navigation">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3598">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="3587" kind="relationship" relationship="rootViewController" id="3597"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3599" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-569" y="552"/>
         </scene>
     </scenes>
 </document>

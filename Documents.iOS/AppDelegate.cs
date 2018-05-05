@@ -54,6 +54,43 @@ namespace Documents.iOS
         {
             // Called when the application is about to terminate. Save data, if needed. See also DidEnterBackground.
         }
+
+		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+        {
+            // custom stuff here using different properties of the url passed in
+            var documentBrowser = Window.RootViewController as DocumentBrowserViewController;
+
+            if (documentBrowser == null)
+            {
+                return false;
+            }
+                
+
+            var storyboard = UIStoryboard.FromName("Main", null);
+
+            if (storyboard == null)
+            {
+                return false;
+            }
+                
+
+            var viewController = storyboard.InstantiateViewController("Import");
+
+            var tableViewController = viewController.ChildViewControllers[0] as ImportTableViewController;
+
+            if (tableViewController == null)
+            {
+                return false;
+            }
+                
+            tableViewController._fileToSave = url.Path;
+
+            viewController.ModalPresentationStyle = UIModalPresentationStyle.FormSheet;
+
+            documentBrowser.PresentViewController(viewController, true, null);
+
+            return true;
+        }
     }
 }
 

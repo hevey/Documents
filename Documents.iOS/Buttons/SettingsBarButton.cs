@@ -24,7 +24,18 @@ namespace Documents.iOS.Buttons
 
         public void ClickedEvent(object sender, EventArgs args)
         {
-            _view.PerformSegue("ToSettings", _view);
+            var storyboard = UIStoryboard.FromName("Main", null);
+
+            if (storyboard == null)
+                return;
+
+            var viewController = storyboard.InstantiateViewController("Settings");
+
+            if (viewController == null)
+                return;
+
+            _view.PresentViewController(viewController, true, null);
+        
         }
     }
 }

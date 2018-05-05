@@ -11,8 +11,8 @@ using UIKit;
 
 namespace Documents.iOS
 {
-    [Register ("DocumentBrowserViewController")]
-    partial class DocumentBrowserViewController
+    [Register ("ImportNavigationViewController")]
+    partial class ImportNavigationViewController
     {
         void ReleaseDesignerOutlets ()
         {
