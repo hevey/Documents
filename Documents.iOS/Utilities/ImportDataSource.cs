@@ -9,24 +9,24 @@ namespace Documents.iOS.Utilities
 {
     public class ImportDataSource: UITableViewSource
     {
-        ImportTableViewController _view;
+        readonly ImportTableViewController _view;
 
-        List<string> TableItems;
-        string _fileToSave = "";
-        string CellIdentifier = "ImportCellIdentifier";
-        string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private List<string> _tableItems;
+        private readonly string _fileToSave;
+        private const string CellIdentifier = "ImportCellIdentifier";
+        private string _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         public ImportDataSource(string fileToSave, ImportTableViewController view)
         {
             _fileToSave = fileToSave;
             _view = view;
-            TableItems = GetDirectories();
+            _tableItems = GetDirectories();
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            UITableViewCell cell = tableView.DequeueReusableCell(CellIdentifier);
-            string item = TableItems[indexPath.Row];
+            var cell = tableView.DequeueReusableCell(CellIdentifier);
+            var item = _tableItems[indexPath.Row];
 
             //---- if there are no cells to reuse, create a new one
             if (cell == null)
@@ -47,21 +47,21 @@ namespace Documents.iOS.Utilities
             }
                 
             cell.TextLabel.Text = folderName;
-            cell.IndentationLevel = relativePath.ToString().Split('/').Count() - 1;
+            cell.IndentationLevel = relativePath.ToString().Split('/').Length - 1;
 
             return cell;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return TableItems.Count;
+            return _tableItems.Count;
         }
 
 		public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
 		{
-            path = TableItems[indexPath.Row];
+            _path = _tableItems[indexPath.Row];
 
-            _view.Title = $"Save to \"{Path.GetFileName(path)}\"";
+            _view.Title = $"Save to \"{Path.GetFileName(_path)}\"";
 
             foreach (var button in _view.NavigationItem.RightBarButtonItems)
             {
@@ -72,18 +72,21 @@ namespace Documents.iOS.Utilities
 
 		public override void RowDeselected(UITableView tableView, NSIndexPath indexPath)
 		{
-            path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 		}
 
 
 		public void SaveFile()
-        {
-            var filename = Path.GetFileName(_fileToSave);
-            File.Copy(_fileToSave, Path.Combine(path, filename));
-        }
+		{
+		    var filename = Path.GetFileName(_fileToSave);
+		    if (filename != null)
+		    {
+		        File.Copy(_fileToSave, Path.Combine(_path, filename));
+		    }
+		}
 
-        public List<string> GetDirectories()
+        private static List<string> GetDirectories()
         {
             var allDirectories = Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "*", SearchOption.AllDirectories).ToList();
 
@@ -129,7 +132,7 @@ namespace Documents.iOS.Utilities
                 }
 
                 //creates new directory as requested
-                if(Directory.Exists(Path.Combine(path, newFolderName)))
+                if(Directory.Exists(Path.Combine(_path, newFolderName)))
                 {
                     var folderExistsAlert = UIAlertController.Create("Folder Exists", "Folder Already Exists", UIAlertControllerStyle.Alert);
                     folderExistsAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (obj) => 
@@ -141,12 +144,12 @@ namespace Documents.iOS.Utilities
                 }
                 else
                 {
-                    var directory = Directory.CreateDirectory(Path.Combine(path, newFolderName));
+                    Directory.CreateDirectory(Path.Combine(_path, newFolderName));
 
 
-                    var oldData = TableItems;
+                    var oldData = _tableItems;
 
-                    TableItems = GetDirectories();
+                    _tableItems = GetDirectories();
 
                     //Get the old data length and determines where to insert new row
                     //Animates the adding in of a row
@@ -157,7 +160,7 @@ namespace Documents.iOS.Utilities
                         {
                             _view.TableView.InsertRows(new[] { NSIndexPath.Create(0, i) }, UITableViewRowAnimation.Fade);
                         }
-                        else if (oldData[i] != TableItems[i])
+                        else if (oldData[i] != _tableItems[i])
                         {
                             _view.TableView.ReloadRows(new[] { NSIndexPath.Create(0, i) }, UITableViewRowAnimation.Fade);
                         }
