@@ -37,7 +37,7 @@ namespace Documents.iOS.Utilities
 
             var relativePath = relativeRoot.MakeRelativeUri(fullPath);
 
-            var folderName = Path.GetFileName(relativePath.ToString());
+            var folderName = Path.GetFileName(Uri.UnescapeDataString(relativePath.ToString()));
 
             if (folderName == "")
                 folderName = Path.GetFileName(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
