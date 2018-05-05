@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Foundation;
@@ -8,24 +9,24 @@ namespace Documents.iOS.Utilities
 {
     public class ImportDataSource: UITableViewSource
     {
-        private ImportTableViewController _view;
+        ImportTableViewController _view;
 
-        private string[] _tableItems;
-        private readonly string _fileToSave;
-        private readonly string CellIdentifier = "ImportCellIdentifier";
-        private string _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        string[] TableItems;
+        string _fileToSave = "";
+        string CellIdentifier = "ImportCellIdentifier";
+        string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         public ImportDataSource(string fileToSave, ImportTableViewController view)
         {
             _fileToSave = fileToSave;
             _view = view;
-            _tableItems = GetDirectories();
+            TableItems = GetDirectories();
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             UITableViewCell cell = tableView.DequeueReusableCell(CellIdentifier);
-            string item = _tableItems[indexPath.Row];
+            string item = TableItems[indexPath.Row];
 
             //---- if there are no cells to reuse, create a new one
             if (cell == null)
@@ -53,14 +54,14 @@ namespace Documents.iOS.Utilities
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return _tableItems.Length;
+            return TableItems.Length;
         }
 
 		public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
 		{
-            _path = _tableItems[indexPath.Row];
+            path = TableItems[indexPath.Row];
 
-            _view.Title = $"Save to \"{Path.GetFileName(_path)}\"";
+            _view.Title = $"Save to \"{Path.GetFileName(path)}\"";
 
             foreach (var button in _view.NavigationItem.RightBarButtonItems)
             {
@@ -71,21 +72,18 @@ namespace Documents.iOS.Utilities
 
 		public override void RowDeselected(UITableView tableView, NSIndexPath indexPath)
 		{
-            _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 		}
 
 
 		public void SaveFile()
-		{
-		    var filename = Path.GetFileName(_fileToSave);
-		    if (filename != null)
-		    {
-		        File.Copy(_fileToSave, Path.Combine(_path, filename));
-		    }
-		}
+        {
+            var filename = Path.GetFileName(_fileToSave);
+            File.Copy(_fileToSave, Path.Combine(path, filename));
+        }
 
-        private static string[] GetDirectories()
+        public string[] GetDirectories()
         {
             var allDirectories = Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "*", SearchOption.AllDirectories).ToList();
 
@@ -109,7 +107,6 @@ namespace Documents.iOS.Utilities
                     allDirectories.RemoveAt(i);
                 }
             }
-            
             allDirectories.Sort();
 
             return allDirectories.ToArray();
@@ -131,12 +128,27 @@ namespace Documents.iOS.Utilities
                     return;
                 }
 
+                //creates new directory as requested
+                var directory = Directory.CreateDirectory(Path.Combine(path,newFolderName));
 
-                Directory.CreateDirectory(Path.Combine(_path,newFolderName));
 
-                _tableItems = GetDirectories();
+                var oldData = TableItems;
 
-                _view.TableView.ReloadData();
+                TableItems = GetDirectories();
+
+                //Get the old data length and determines where to insert new row
+                //Animates the adding in of a row
+                for (int i = oldData.Length; i >= 0; i--)
+                {
+                    if(i > oldData.Length - 1)
+                    {
+                        _view.TableView.InsertRows(new[] { NSIndexPath.Create(0, i) }, UITableViewRowAnimation.Automatic);
+                    }
+                    else if(oldData[i] != TableItems[i])
+                    {
+                        _view.TableView.ReloadRows(new[] { NSIndexPath.Create(0, i) }, UITableViewRowAnimation.Automatic);
+                    }
+                }
 
             }));
 

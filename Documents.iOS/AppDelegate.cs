@@ -83,8 +83,9 @@ namespace Documents.iOS
                 return false;
             }
                 
-
             tableViewController._fileToSave = url.Path;
+
+            viewController.ModalPresentationStyle = UIModalPresentationStyle.FormSheet;
 
             documentBrowser.PresentViewController(viewController, true, null);
 
