@@ -10,10 +10,13 @@ namespace Documents.iOS.Utilities
     public class ImportDataSource: UITableViewSource
     {
         string[] TableItems;
+        string _fileToSave = "";
         string CellIdentifier = "ImportCellIdentifier";
+        string path = "";
 
-        public ImportDataSource()
+        public ImportDataSource(string fileToSave)
         {
+            _fileToSave = fileToSave;
             TableItems = GetDirectories();
         }
 
@@ -32,7 +35,9 @@ namespace Documents.iOS.Utilities
 
             var relativePath = relativeRoot.MakeRelativeUri(fullPath);
 
-            cell.TextLabel.Text = relativePath.ToString();
+
+
+            cell.TextLabel.Text = Uri.UnescapeDataString(relativePath.ToString());
 
             return cell;
         }
@@ -42,23 +47,39 @@ namespace Documents.iOS.Utilities
             return TableItems.Length;
         }
 
+		public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
+		{
+            path = TableItems[indexPath.Row];
+
+		}
+
+        public void saveFile()
+        {
+            var filename = Path.GetFileName(_fileToSave);
+            File.Copy(_fileToSave, Path.Combine(path, filename));
+        }
+
         public string[] GetDirectories()
         {
             var allDirectories = Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "*", SearchOption.AllDirectories).ToList();
 
 
+
             for (int i = allDirectories.Count - 1; i >= 0; i--)
             {
-                var directoryName = Path.GetFileName(allDirectories[i]);
-                if (directoryName == ".Trash" || directoryName == "Inbox")
+                var fullPath = new Uri(allDirectories[i]);
+                var relativeRoot = new Uri($"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\");
+
+                var relativePath = relativeRoot.MakeRelativeUri(fullPath);
+
+                if(relativePath.ToString().Split('/')[0] == ".Trash" || relativePath.ToString().Split('/')[0] == "Inbox")
                 {
                     allDirectories.RemoveAt(i);
                 }
             }
+            allDirectories.Sort();
 
             return allDirectories.ToArray();
         }
-
-
-    }
+	}
 }

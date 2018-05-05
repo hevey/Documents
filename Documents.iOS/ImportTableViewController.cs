@@ -8,6 +8,10 @@ namespace Documents.iOS
 {
     public partial class ImportTableViewController : UITableViewController
     {
+
+        public string _fileToSave { get; set; }
+        private ImportDataSource _dataSource;
+
         public ImportTableViewController (IntPtr handle) : base (handle)
         {
             
@@ -16,7 +20,9 @@ namespace Documents.iOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            this.TableView.Source = new ImportDataSource();
+
+            _dataSource = new ImportDataSource(_fileToSave);
+            this.TableView.Source = _dataSource;
         }
          
         public override void ViewWillAppear(bool animated)
@@ -27,6 +33,12 @@ namespace Documents.iOS
         partial void CancelButton_Activated(UIBarButtonItem sender)
         {
             this.DismissViewController(true, null);                                       
+        }
+
+        partial void SaveButton_Activated(UIBarButtonItem sender)
+        {
+            _dataSource.saveFile();
+            this.DismissViewController(true, null);
         }
     }
 }

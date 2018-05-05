@@ -72,14 +72,14 @@ namespace Documents.iOS
 
             var viewController = storyboard.InstantiateViewController("Import");
 
+            ImportTableViewController tableViewController = viewController.ChildViewControllers[0] as ImportTableViewController;
+
+            if (tableViewController == null)
+                return false;
+
+            tableViewController._fileToSave = url.Path;
+
             documentBrowser.PresentViewController(viewController, true, null);
-
-            //var location = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            //var filename = Path.GetFileName(url.Path);
-
-            //File.Copy(url.Path, Path.Combine(location, filename));
-            
 
             return true;
         }
