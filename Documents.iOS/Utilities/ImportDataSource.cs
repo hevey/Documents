@@ -9,17 +9,19 @@ namespace Documents.iOS.Utilities
 {
     public class ImportDataSource: UITableViewSource
     {
+        ImportTableViewController _view;
+
         string[] TableItems;
         string _fileToSave = "";
         string CellIdentifier = "ImportCellIdentifier";
-        string path = "";
+        string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-        public ImportDataSource(string fileToSave)
+        public ImportDataSource(string fileToSave, ImportTableViewController view)
         {
             _fileToSave = fileToSave;
+            _view = view;
             TableItems = GetDirectories();
         }
-
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
@@ -51,6 +53,8 @@ namespace Documents.iOS.Utilities
 		{
             path = TableItems[indexPath.Row];
 
+            _view.Title = $"Save to {Path.GetFileName(path)}";
+
 		}
 
         public void saveFile()
@@ -72,7 +76,7 @@ namespace Documents.iOS.Utilities
 
                 var relativePath = relativeRoot.MakeRelativeUri(fullPath);
 
-                if(relativePath.ToString().Split('/')[0] == ".Trash" || relativePath.ToString().Split('/')[0] == "Inbox")
+                if (relativePath.ToString().Split('/')[0] == ".Trash" || relativePath.ToString().Split('/')[0] == "Inbox")
                 {
                     allDirectories.RemoveAt(i);
                 }
@@ -81,5 +85,37 @@ namespace Documents.iOS.Utilities
 
             return allDirectories.ToArray();
         }
-	}
+
+        public void createNewFolder()
+        {
+            var newFolderAlert = UIAlertController.Create("New Folder", "Enter new folder name.", UIAlertControllerStyle.Alert);
+
+            newFolderAlert.AddTextField(textField => {} );
+
+            //Add Action
+            newFolderAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (sender) => {
+                var newFolderName = newFolderAlert.TextFields.First().Text;
+
+                if (newFolderName == "")
+                {
+                    _view.PresentViewController(newFolderAlert, true, null);
+                    return;
+                }
+
+
+                Directory.CreateDirectory(Path.Combine(path,newFolderName));
+
+                TableItems = GetDirectories();
+
+                _view.TableView.ReloadData();
+
+            }));
+
+            newFolderAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (sender) => {} ));
+
+            // Present Alert
+            _view.PresentViewController(newFolderAlert, true, null);
+
+        }
+    }
 }

@@ -127,15 +127,23 @@
                                 <action selector="CancelButton_Activated:" destination="3587" id="3815"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="5674">
-                            <connections>
-                                <action selector="SaveButton_Activated:" destination="3587" id="5675"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Save" id="5674">
+                                <connections>
+                                    <action selector="SaveButton_Activated:" destination="3587" id="5675"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="New Folder" id="7539">
+                                <connections>
+                                    <action selector="NewFolderButton_Activated:" destination="3587" id="7550"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="CancelButton" destination="3814" id="name-outlet-3814"/>
                         <outlet property="SaveButton" destination="5674" id="name-outlet-5674"/>
+                        <outlet property="NewFolderButton" destination="7539" id="name-outlet-7539"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3594" userLabel="First Responder" sceneMemberID="firstResponder"/>

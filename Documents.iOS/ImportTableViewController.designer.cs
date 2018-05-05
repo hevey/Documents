@@ -20,11 +20,19 @@ namespace Documents.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIBarButtonItem NewFolderButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIBarButtonItem SaveButton { get; set; }
 
         [Action ("CancelButton_Activated:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void CancelButton_Activated (UIKit.UIBarButtonItem sender);
+
+        [Action ("NewFolderButton_Activated:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void NewFolderButton_Activated (UIKit.UIBarButtonItem sender);
 
         [Action ("SaveButton_Activated:")]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -35,6 +43,11 @@ namespace Documents.iOS
             if (CancelButton != null) {
                 CancelButton.Dispose ();
                 CancelButton = null;
+            }
+
+            if (NewFolderButton != null) {
+                NewFolderButton.Dispose ();
+                NewFolderButton = null;
             }
 
             if (SaveButton != null) {

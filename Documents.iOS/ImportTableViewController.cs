@@ -21,8 +21,9 @@ namespace Documents.iOS
         {
             base.ViewDidLoad();
 
-            _dataSource = new ImportDataSource(_fileToSave);
+            _dataSource = new ImportDataSource(_fileToSave, this);
             this.TableView.Source = _dataSource;
+            this.Title = "Save to Documents";
         }
          
         public override void ViewWillAppear(bool animated)
@@ -39,6 +40,11 @@ namespace Documents.iOS
         {
             _dataSource.saveFile();
             this.DismissViewController(true, null);
+        }
+
+        partial void NewFolderButton_Activated(UIBarButtonItem sender)
+        {
+            _dataSource.createNewFolder();
         }
     }
 }
