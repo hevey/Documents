@@ -128,12 +128,12 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem title="Save" id="5674">
+                            <barButtonItem title="Save" id="5674" enabled="NO">
                                 <connections>
                                     <action selector="SaveButton_Activated:" destination="3587" id="5675"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="New Folder" id="7539">
+                            <barButtonItem title="New Folder" id="7539" enabled="NO">
                                 <connections>
                                     <action selector="NewFolderButton_Activated:" destination="3587" id="7550"/>
                                 </connections>

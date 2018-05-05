@@ -23,7 +23,8 @@ namespace Documents.iOS
 
             _dataSource = new ImportDataSource(_fileToSave, this);
             this.TableView.Source = _dataSource;
-            this.Title = "Save to Documents";
+            this.Title = "Save File";
+
         }
          
         public override void ViewWillAppear(bool animated)
@@ -46,5 +47,6 @@ namespace Documents.iOS
         {
             _dataSource.createNewFolder();
         }
+
     }
 }
