@@ -11,7 +11,7 @@ namespace Documents.iOS.Utilities
     {
         ImportTableViewController _view;
 
-        string[] TableItems;
+        List<string> TableItems;
         string _fileToSave = "";
         string CellIdentifier = "ImportCellIdentifier";
         string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -54,7 +54,7 @@ namespace Documents.iOS.Utilities
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return TableItems.Length;
+            return TableItems.Count;
         }
 
 		public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
@@ -83,7 +83,7 @@ namespace Documents.iOS.Utilities
             File.Copy(_fileToSave, Path.Combine(path, filename));
         }
 
-        public string[] GetDirectories()
+        public List<string> GetDirectories()
         {
             var allDirectories = Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "*", SearchOption.AllDirectories).ToList();
 
@@ -109,7 +109,7 @@ namespace Documents.iOS.Utilities
             }
             allDirectories.Sort();
 
-            return allDirectories.ToArray();
+            return allDirectories;
         }
 
         public void CreateNewFolder()
@@ -129,25 +129,40 @@ namespace Documents.iOS.Utilities
                 }
 
                 //creates new directory as requested
-                var directory = Directory.CreateDirectory(Path.Combine(path,newFolderName));
-
-
-                var oldData = TableItems;
-
-                TableItems = GetDirectories();
-
-                //Get the old data length and determines where to insert new row
-                //Animates the adding in of a row
-                for (int i = oldData.Length; i >= 0; i--)
+                if(Directory.Exists(Path.Combine(path, newFolderName)))
                 {
-                    if(i > oldData.Length - 1)
+                    var folderExistsAlert = UIAlertController.Create("Folder Exists", "Folder Already Exists", UIAlertControllerStyle.Alert);
+                    folderExistsAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (obj) => 
                     {
-                        _view.TableView.InsertRows(new[] { NSIndexPath.Create(0, i) }, UITableViewRowAnimation.Automatic);
-                    }
-                    else if(oldData[i] != TableItems[i])
+                        _view.PresentViewController(newFolderAlert, true, null);    
+                    }));
+
+                    _view.PresentViewController(folderExistsAlert, true, null);
+                }
+                else
+                {
+                    var directory = Directory.CreateDirectory(Path.Combine(path, newFolderName));
+
+
+                    var oldData = TableItems;
+
+                    TableItems = GetDirectories();
+
+                    //Get the old data length and determines where to insert new row
+                    //Animates the adding in of a row
+                    _view.TableView.BeginUpdates();
+                    for (int i = oldData.Count; i >= 0; i--)
                     {
-                        _view.TableView.ReloadRows(new[] { NSIndexPath.Create(0, i) }, UITableViewRowAnimation.Automatic);
+                        if (i > oldData.Count - 1)
+                        {
+                            _view.TableView.InsertRows(new[] { NSIndexPath.Create(0, i) }, UITableViewRowAnimation.Fade);
+                        }
+                        else if (oldData[i] != TableItems[i])
+                        {
+                            _view.TableView.ReloadRows(new[] { NSIndexPath.Create(0, i) }, UITableViewRowAnimation.Fade);
+                        }
                     }
+                    _view.TableView.EndUpdates();   
                 }
 
             }));
