@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Foundation;
+﻿using Foundation;
 using UIKit;
 
 namespace Documents.iOS
@@ -63,19 +61,28 @@ namespace Documents.iOS
             var documentBrowser = Window.RootViewController as DocumentBrowserViewController;
 
             if (documentBrowser == null)
+            {
                 return false;
+            }
+                
 
             var storyboard = UIStoryboard.FromName("Main", null);
 
             if (storyboard == null)
+            {
                 return false;
+            }
+                
 
             var viewController = storyboard.InstantiateViewController("Import");
 
-            ImportTableViewController tableViewController = viewController.ChildViewControllers[0] as ImportTableViewController;
+            var tableViewController = viewController.ChildViewControllers[0] as ImportTableViewController;
 
             if (tableViewController == null)
+            {
                 return false;
+            }
+                
 
             tableViewController._fileToSave = url.Path;
 

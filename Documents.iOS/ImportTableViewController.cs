@@ -39,13 +39,13 @@ namespace Documents.iOS
 
         partial void SaveButton_Activated(UIBarButtonItem sender)
         {
-            _dataSource.saveFile();
+            _dataSource.SaveFile();
             this.DismissViewController(true, null);
         }
 
         partial void NewFolderButton_Activated(UIBarButtonItem sender)
         {
-            _dataSource.createNewFolder();
+            _dataSource.CreateNewFolder();
         }
 
     }

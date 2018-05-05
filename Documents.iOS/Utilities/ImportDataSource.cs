@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Foundation;
@@ -9,28 +8,30 @@ namespace Documents.iOS.Utilities
 {
     public class ImportDataSource: UITableViewSource
     {
-        ImportTableViewController _view;
+        private ImportTableViewController _view;
 
-        string[] TableItems;
-        string _fileToSave = "";
-        string CellIdentifier = "ImportCellIdentifier";
-        string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private string[] _tableItems;
+        private readonly string _fileToSave;
+        private readonly string CellIdentifier = "ImportCellIdentifier";
+        private string _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         public ImportDataSource(string fileToSave, ImportTableViewController view)
         {
             _fileToSave = fileToSave;
             _view = view;
-            TableItems = GetDirectories();
+            _tableItems = GetDirectories();
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             UITableViewCell cell = tableView.DequeueReusableCell(CellIdentifier);
-            string item = TableItems[indexPath.Row];
+            string item = _tableItems[indexPath.Row];
 
             //---- if there are no cells to reuse, create a new one
             if (cell == null)
-            { cell = new UITableViewCell(UITableViewCellStyle.Default, CellIdentifier); }
+            { 
+                cell = new UITableViewCell(UITableViewCellStyle.Default, CellIdentifier); 
+            }
 
             var fullPath = new Uri(item);
             var relativeRoot = new Uri($"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}");
@@ -40,8 +41,10 @@ namespace Documents.iOS.Utilities
             var folderName = Path.GetFileName(Uri.UnescapeDataString(relativePath.ToString()));
 
             if (folderName == "")
+            {
                 folderName = Path.GetFileName(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-
+            }
+                
             cell.TextLabel.Text = folderName;
             cell.IndentationLevel = relativePath.ToString().Split('/').Count() - 1;
 
@@ -50,14 +53,14 @@ namespace Documents.iOS.Utilities
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return TableItems.Length;
+            return _tableItems.Length;
         }
 
 		public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
 		{
-            path = TableItems[indexPath.Row];
+            _path = _tableItems[indexPath.Row];
 
-            _view.Title = $"Save to \"{Path.GetFileName(path)}\"";
+            _view.Title = $"Save to \"{Path.GetFileName(_path)}\"";
 
             foreach (var button in _view.NavigationItem.RightBarButtonItems)
             {
@@ -68,18 +71,21 @@ namespace Documents.iOS.Utilities
 
 		public override void RowDeselected(UITableView tableView, NSIndexPath indexPath)
 		{
-            path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            _path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 		}
 
 
-		public void saveFile()
-        {
-            var filename = Path.GetFileName(_fileToSave);
-            File.Copy(_fileToSave, Path.Combine(path, filename));
-        }
+		public void SaveFile()
+		{
+		    var filename = Path.GetFileName(_fileToSave);
+		    if (filename != null)
+		    {
+		        File.Copy(_fileToSave, Path.Combine(_path, filename));
+		    }
+		}
 
-        public string[] GetDirectories()
+        private static string[] GetDirectories()
         {
             var allDirectories = Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "*", SearchOption.AllDirectories).ToList();
 
@@ -93,19 +99,23 @@ namespace Documents.iOS.Utilities
                 var relativePath = relativeRoot.MakeRelativeUri(fullPath);
 
                 if (relativePath.ToString() == "")
+                {
                     continue;
+                }
+                    
                 
                 if (relativePath.ToString().Split('/')[1] == ".Trash" || relativePath.ToString().Split('/')[1] == "Inbox")
                 {
                     allDirectories.RemoveAt(i);
                 }
             }
+            
             allDirectories.Sort();
 
             return allDirectories.ToArray();
         }
 
-        public void createNewFolder()
+        public void CreateNewFolder()
         {
             var newFolderAlert = UIAlertController.Create("New Folder", "Enter new folder name.", UIAlertControllerStyle.Alert);
 
@@ -122,9 +132,9 @@ namespace Documents.iOS.Utilities
                 }
 
 
-                Directory.CreateDirectory(Path.Combine(path,newFolderName));
+                Directory.CreateDirectory(Path.Combine(_path,newFolderName));
 
-                TableItems = GetDirectories();
+                _tableItems = GetDirectories();
 
                 _view.TableView.ReloadData();
 

@@ -5,7 +5,6 @@ using Documents.iOS.Managers;
 using System.Collections.Generic;
 using Documents.iOS.Buttons;
 using Documents.iOS.Delegates;
-using Foundation;
 
 namespace Documents.iOS
 {
