@@ -406,11 +406,16 @@
     <Compile Include="Managers\LicenseManager.cs" />
     <Compile Include="Managers\TrailingUIBarButtonManager.cs" />
     <Compile Include="Models\LicenseDetails.cs" />
+    <Compile Include="OpenSourceTableViewController.cs" />
+    <Compile Include="OpenSourceTableViewController.designer.cs">
+      <DependentUpon>OpenSourceTableViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\LoadingOverlay.cs" />
     <Compile Include="Enums\UnarchiveActionEnum.cs" />
     <Compile Include="Delegates\DocumentInteractionControllerDelegate.cs" />
     <Compile Include="Actions\ArchiveMenuAction.cs" />
     <Compile Include="Actions\ArchiveNavigationBarAction.cs" />
+    <Compile Include="Utilities\OpenSourceLicenseDataSource.cs" />
     <Compile Include="Utilities\SettingsDataSource.cs" />
     <Compile Include="SettingsViewController.cs" />
     <Compile Include="SettingsViewController.designer.cs">

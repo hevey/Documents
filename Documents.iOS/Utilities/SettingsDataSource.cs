@@ -9,27 +9,35 @@ namespace Documents.iOS.Utilities
 {
     public class SettingsDataSource : UITableViewSource
     {
-        private const int LicenseDetailsSectionNumber = 0;
+        private const string SettingsCellIdentifier = "SettingsCell";
+        private const string OtherSettingsCellIdentifier = "OtherSettingsCell";
+        private const int SettingsSectionNumber = 0;
+        private const int OtherSettingsSectionNumber = 1;
 
-        string LicenseCellIdentifier = "LicenseCell";
-        IEnumerable<LicenseDetails> _licenses;
+        private List<string> _settingsDetails; 
+        private List<string> _otherSettingsDetails;
+        private UIViewController _viewController;
 
-        public SettingsDataSource(IEnumerable<LicenseDetails> Licenses)
+        public SettingsDataSource(UIViewController controller)
         {
-            _licenses = Licenses;
+            _settingsDetails = new List<string>{"Test Setting"};
+            _otherSettingsDetails = new List<string>{ "Open Source Licenses" };
+            _viewController = controller;
         }
 
         public override nint NumberOfSections(UITableView tableView)
         {
-            return 1;
+            return 2;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
             switch (section)
             {
-                case LicenseDetailsSectionNumber:
-                    return _licenses.Count();
+                case SettingsSectionNumber:
+                    return _settingsDetails.Count;
+                case OtherSettingsSectionNumber:
+                    return _otherSettingsDetails.Count;
             }
             return 0;
         }
@@ -38,24 +46,26 @@ namespace Documents.iOS.Utilities
         {
             switch (indexPath.Section)
             {
-                case LicenseDetailsSectionNumber:
-                    var data = _licenses.ToList()[indexPath.Row];
-                    OpenUrl(data.Uri);
+                case SettingsSectionNumber:
+                    break;
+                case OtherSettingsSectionNumber:
+                    var rowString = _otherSettingsDetails[indexPath.Row];
+                    if (rowString == "Open Source Licenses")
+                    {
+                        _viewController.PerformSegue("OSSSegue", this);
+                    }
+
                     break;
             }
         }
 
-        private void OpenUrl(Uri uri)
-        {
-            UIApplication.SharedApplication.OpenUrl(uri);
-        }
 
         public override string TitleForHeader(UITableView tableView, nint section)
         {
             switch (section)
             {
-                case LicenseDetailsSectionNumber:
-                    return "Open Source Software - Licenses";
+                case SettingsSectionNumber:
+                    return "Settings";
                 default:
                     return "";
             }
@@ -64,19 +74,33 @@ namespace Documents.iOS.Utilities
         {
            
 
-            if(indexPath.Section == LicenseDetailsSectionNumber)
+            if(indexPath.Section == OtherSettingsSectionNumber)
             {
 
-                UITableViewCell cell = tableView.DequeueReusableCell(LicenseCellIdentifier);
+                UITableViewCell cell = tableView.DequeueReusableCell(OtherSettingsCellIdentifier);
 
                 //---- if there are no cells to reuse, create a new one
                 if (cell == null)
-                { cell = new UITableViewCell(UITableViewCellStyle.Default, LicenseCellIdentifier); }
-                var data = _licenses.ToList()[indexPath.Row];
-                cell.TextLabel.Text = data.Title;
-                cell.DetailTextLabel.Text = data.License;
-                cell.DetailTextLabel.Lines = (data.License.Length - data.License.Replace(Environment.NewLine, string.Empty).Length)*4;
-                cell.DetailTextLabel.AdjustsFontSizeToFitWidth = true;
+                {
+                    cell = new UITableViewCell(UITableViewCellStyle.Default, OtherSettingsCellIdentifier);
+                }
+                var data = _otherSettingsDetails.ToList()[indexPath.Row];
+                cell.TextLabel.Text = data;
+                return cell;
+            }
+
+            if (indexPath.Section == SettingsSectionNumber)
+            {
+
+                UITableViewCell cell = tableView.DequeueReusableCell(SettingsCellIdentifier);
+
+                //---- if there are no cells to reuse, create a new one
+                if (cell == null)
+                {
+                    cell = new UITableViewCell(UITableViewCellStyle.Default, SettingsCellIdentifier);
+                }
+                var data = _settingsDetails.ToList()[indexPath.Row];
+                cell.TextLabel.Text = data;
                 return cell;
             }
             return null;
