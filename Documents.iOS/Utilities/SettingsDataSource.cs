@@ -75,7 +75,8 @@ namespace Documents.iOS.Utilities
                 var data = _licenses.ToList()[indexPath.Row];
                 cell.TextLabel.Text = data.Title;
                 cell.DetailTextLabel.Text = data.License;
-                cell.DetailTextLabel.Lines = (data.License.Length - data.License.Replace(Environment.NewLine, string.Empty).Length);
+                cell.DetailTextLabel.Lines = (data.License.Length - data.License.Replace(Environment.NewLine, string.Empty).Length)*4;
+                cell.DetailTextLabel.AdjustsFontSizeToFitWidth = true;
                 return cell;
             }
             return null;

@@ -3,6 +3,7 @@ using Documents.iOS.Enums;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using SharpCompress.Readers;
 using SharpCompress.Writers;
 using SharpCompress.Common;
@@ -42,21 +43,51 @@ namespace Documents.iOS.Managers
             switch (type)
             {
                 case ArchiveTypeEnum.Zip:
-                    using (var zip = File.OpenWrite(archiveFilePath))
-                    using (var zipWriter = WriterFactory.Open(zip, ArchiveType.Zip, CompressionType.Deflate))
+                    //using (var zip = File.OpenWrite(archiveFilePath))
+                    //using (var zipWriter = WriterFactory.Open(zip, ArchiveType.Zip, CompressionType.Deflate))
+                    //{
+                    //    foreach (var filePath in files)
+                    //    {
+                    //        if (Directory.Exists(filePath))
+                    //        {
+                    //            zipWriter.WriteAll(filePath, "*", SearchOption.AllDirectories);
+                    //        }
+                    //        else
+                    //        {
+                    //            zipWriter.Write(Path.GetFileName(filePath), filePath);
+                    //        }
+                    //    }
+                    //}
+                    var fp = files.First();
+                    if (File.Exists(fp))
                     {
-                        foreach (var filePath in files)
+                        using (FileStream zipToOpen = new FileStream(archiveFilePath, FileMode.Create))
                         {
-                            if (Directory.Exists(filePath))
+                            using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
                             {
-                                zipWriter.WriteAll(filePath, "*", SearchOption.AllDirectories);
-                            }
-                            else
-                            {
-                                zipWriter.Write(Path.GetFileName(filePath), filePath);
+                                foreach (var file in files)
+                                {
+                                    if (File.Exists(file))
+                                    {
+                                        var fileToCompress = new FileInfo(file);
+                                        using (FileStream originalFileStream = fileToCompress.OpenRead())
+                                        {
+                                            ZipArchiveEntry readmeEntry = archive.CreateEntry(fileToCompress.Name);
+                                            originalFileStream.CopyTo(readmeEntry.Open());
+                                        }
+                                    }
+
+
+                                }
                             }
                         }
                     }
+                    else if(Directory.Exists(fp))
+                    {
+                        ZipFile.CreateFromDirectory(fp, archiveFilePath, CompressionLevel.Optimal,true);
+                    }
+                    
+
                     break;
                 case ArchiveTypeEnum.GZip:
                     using (Stream stream = File.OpenWrite(archiveFilePath))
@@ -94,6 +125,25 @@ namespace Documents.iOS.Managers
                     break;
                 default:
                     throw new Exception("Unsupported archive type");
+            }
+        }
+
+        private static void CompressInToZip(IEnumerable<string> files, ZipArchive archive)
+        {
+            
+            foreach (var file in files)
+            {
+                if (File.Exists(file))
+                {
+                    var fileToCompress = new FileInfo(file);
+                    using (FileStream originalFileStream = fileToCompress.OpenRead())
+                    {
+                        ZipArchiveEntry readmeEntry = archive.CreateEntry(fileToCompress.Name);
+                        originalFileStream.CopyTo(readmeEntry.Open());
+                    }
+                }
+
+               
             }
         }
 
