@@ -5,8 +5,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using SharpCompress.Readers;
-using SharpCompress.Writers;
-using SharpCompress.Common;
+// ReSharper disable AssignNullToNotNullAttribute
+
 namespace Documents.iOS.Managers
 {
     public class ArchiveManager
@@ -14,9 +14,8 @@ namespace Documents.iOS.Managers
 
         public bool CheckForArchiveFilesExists(string filePath, UnarchiveLocationEnum location, string folderToSave = "")
         {
-            var collision = false;
             var extractLocation = DetermineExtractLocation(filePath, location, folderToSave);
-            collision = CheckForGenericFilesExists(filePath, extractLocation);
+            var collision = CheckForGenericFilesExists(filePath, extractLocation);
             return collision;
         }
 
@@ -43,29 +42,15 @@ namespace Documents.iOS.Managers
             switch (type)
             {
                 case ArchiveTypeEnum.Zip:
-                    //using (var zip = File.OpenWrite(archiveFilePath))
-                    //using (var zipWriter = WriterFactory.Open(zip, ArchiveType.Zip, CompressionType.Deflate))
-                    //{
-                    //    foreach (var filePath in files)
-                    //    {
-                    //        if (Directory.Exists(filePath))
-                    //        {
-                    //            zipWriter.WriteAll(filePath, "*", SearchOption.AllDirectories);
-                    //        }
-                    //        else
-                    //        {
-                    //            zipWriter.Write(Path.GetFileName(filePath), filePath);
-                    //        }
-                    //    }
-                    //}
-                    var fp = files.First();
+                    var enumerable = files as string[] ?? files.ToArray();
+                    var fp = enumerable.First();
                     if (File.Exists(fp))
                     {
                         using (FileStream zipToOpen = new FileStream(archiveFilePath, FileMode.Create))
                         {
                             using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
                             {
-                                foreach (var file in files)
+                                foreach (var file in enumerable)
                                 {
                                     if (File.Exists(file))
                                     {
@@ -76,8 +61,6 @@ namespace Documents.iOS.Managers
                                             originalFileStream.CopyTo(readmeEntry.Open());
                                         }
                                     }
-
-
                                 }
                             }
                         }
@@ -86,64 +69,9 @@ namespace Documents.iOS.Managers
                     {
                         ZipFile.CreateFromDirectory(fp, archiveFilePath, CompressionLevel.Optimal,true);
                     }
-                    
-
-                    break;
-                case ArchiveTypeEnum.GZip:
-                    using (Stream stream = File.OpenWrite(archiveFilePath))
-                    using (var writer = WriterFactory.Open(stream, ArchiveType.GZip, CompressionType.GZip))
-                    {
-                        foreach (var filePath in files)
-                        {
-                            if (Directory.Exists(filePath))
-                            {
-                                writer.WriteAll(filePath, "*", SearchOption.AllDirectories);
-                            }
-                            else
-                            {
-                                writer.Write(Path.GetFileName(filePath), filePath);
-                            }
-                        }
-                    }
-                    break;
-                case ArchiveTypeEnum.Tar:
-                    using (Stream stream = File.OpenWrite(archiveFilePath))
-                    using (var writer = WriterFactory.Open(stream, ArchiveType.Tar, CompressionType.GZip))
-                    {
-                        foreach (var filePath in files)
-                        {
-                            if (Directory.Exists(filePath))
-                            {
-                                writer.WriteAll(filePath, "*", SearchOption.AllDirectories);
-                            }
-                            else
-                            {
-                                writer.Write(Path.GetFileName(filePath), filePath);
-                            }
-                        }
-                    }
                     break;
                 default:
                     throw new Exception("Unsupported archive type");
-            }
-        }
-
-        private static void CompressInToZip(IEnumerable<string> files, ZipArchive archive)
-        {
-            
-            foreach (var file in files)
-            {
-                if (File.Exists(file))
-                {
-                    var fileToCompress = new FileInfo(file);
-                    using (FileStream originalFileStream = fileToCompress.OpenRead())
-                    {
-                        ZipArchiveEntry readmeEntry = archive.CreateEntry(fileToCompress.Name);
-                        originalFileStream.CopyTo(readmeEntry.Open());
-                    }
-                }
-
-               
             }
         }
 
@@ -164,7 +92,6 @@ namespace Documents.iOS.Managers
                     overwrite = true;
                     break;
                 case UnarchiveActionEnum.MergeWithoutOverwrite:
-                    overwrite = false;
                     break;
 
             }
