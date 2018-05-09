@@ -22,20 +22,37 @@ namespace Documents.iOS.Actions
         public void Action(NSUrl[] obj)
         {
             var files = GetFiles(obj);
-            var archiveController = UIAlertController.Create("Archive", "Archive Type", UIAlertControllerStyle.ActionSheet);
-
-            archiveController.AddAction(UIAlertAction.Create("Zip", UIAlertActionStyle.Default, (actionParam) => Archive(files, ArchiveTypeEnum.Zip)));
-            archiveController.AddAction(UIAlertAction.Create("Tar", UIAlertActionStyle.Default, (actionParam) => Archive(files, ArchiveTypeEnum.Tar)));
-            archiveController.AddAction(UIAlertAction.Create("GZip", UIAlertActionStyle.Default, (actionParam) => Archive(files, ArchiveTypeEnum.GZip)));
-            archiveController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
-
-            if (archiveController.PopoverPresentationController != null)
+            if (files.Count() > 1)
             {
-                archiveController.PopoverPresentationController.SourceView = _view.View;
-                archiveController.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.GetMidX(), _view.View.Bounds.GetMidY(), 0, 0);
-            }
+                var errorController =
+                    UIAlertController.Create("Error", "Unable to archive multiple files, please select one file or folder.", UIAlertControllerStyle.Alert);
+                errorController.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+                _view.PresentViewController(errorController, true, null);
 
-            _view.PresentViewController(archiveController, true, null);
+            }
+            else
+            {
+
+
+                var archiveController =
+                    UIAlertController.Create("Archive", "Archive Type", UIAlertControllerStyle.ActionSheet);
+
+                archiveController.AddAction(UIAlertAction.Create("Zip", UIAlertActionStyle.Default,
+                    (actionParam) => Archive(files, ArchiveTypeEnum.Zip)));
+                //archiveController.AddAction(UIAlertAction.Create("Tar", UIAlertActionStyle.Default,
+                //    (actionParam) => Archive(files, ArchiveTypeEnum.Tar)));
+                //archiveController.AddAction(UIAlertAction.Create("GZip", UIAlertActionStyle.Default,
+                //    (actionParam) => Archive(files, ArchiveTypeEnum.GZip)));
+                archiveController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null));
+
+                if (archiveController.PopoverPresentationController != null)
+                {
+                    archiveController.PopoverPresentationController.SourceView = _view.View;
+					archiveController.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.Right - 147.5, _view.View.Bounds.Top + 55, 0, 0);
+                }
+                
+                _view.PresentViewController(archiveController, true, null);
+            }
         }
 
         private IEnumerable<string> GetFiles(NSUrl[] urls)
@@ -51,7 +68,7 @@ namespace Documents.iOS.Actions
         }
         private void Archive(IEnumerable<string> files, ArchiveTypeEnum type)
         {
-            if(files.Count() == 0)
+            if(!files.Any())
 			{
 				return;
 			}

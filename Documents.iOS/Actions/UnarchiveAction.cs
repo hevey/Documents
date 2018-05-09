@@ -78,7 +78,7 @@ namespace Documents.iOS.Actions
                 if (unarchiveLocationController.PopoverPresentationController != null)
                 {
                     unarchiveLocationController.PopoverPresentationController.SourceView = _view.View;
-                    unarchiveLocationController.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.GetMidX(), _view.View.Bounds.GetMidY(), 0, 0);
+					unarchiveLocationController.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.Right - 147.5, _view.View.Bounds.Top + 55, 0, 0);
                 }
                 // Present Alert
                 _view.PresentViewController(unarchiveLocationController, true, null);
