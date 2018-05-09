@@ -48,10 +48,9 @@ namespace Documents.iOS.Actions
                 if (archiveController.PopoverPresentationController != null)
                 {
                     archiveController.PopoverPresentationController.SourceView = _view.View;
-                    archiveController.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.GetMidX(),
-                        _view.View.Bounds.GetMidY(), 0, 0);
+					archiveController.PopoverPresentationController.SourceRect = new CGRect(_view.View.Bounds.Right - 147.5, _view.View.Bounds.Top + 55, 0, 0);
                 }
-
+                
                 _view.PresentViewController(archiveController, true, null);
             }
         }
