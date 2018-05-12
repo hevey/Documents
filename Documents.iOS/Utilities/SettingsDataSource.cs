@@ -9,10 +9,11 @@ namespace Documents.iOS.Utilities
 {
     public class SettingsDataSource : UITableViewSource
     {
-        private const string SettingsCellIdentifier = "SettingsCell";
-        private const string OtherSettingsCellIdentifier = "OtherSettingsCell";
-        private const int SettingsSectionNumber = 0;
-        private const int OtherSettingsSectionNumber = 1;
+		private const string VisualCellIdentifier = "SettingsCell";
+		private const string SwitchCellIdentifier = "SwitchCell";
+        private const string LicensesCellIdentifier = "LicensesCell";
+		private const int VisualSettingsSection = 0;
+        private const int AcknowledgementsSection = 1;
 
         private List<string> _settingsDetails; 
         private List<string> _otherSettingsDetails;
@@ -20,7 +21,7 @@ namespace Documents.iOS.Utilities
 
         public SettingsDataSource(UIViewController controller)
         {
-            _settingsDetails = new List<string>{"Test Setting"};
+            _settingsDetails = new List<string>{"Dark Theme"};
             _otherSettingsDetails = new List<string>{ "Open Source Licenses" };
             _viewController = controller;
         }
@@ -34,9 +35,9 @@ namespace Documents.iOS.Utilities
         {
             switch (section)
             {
-                case SettingsSectionNumber:
+                case VisualSettingsSection:
                     return _settingsDetails.Count;
-                case OtherSettingsSectionNumber:
+				case AcknowledgementsSection:
                     return _otherSettingsDetails.Count;
             }
             return 0;
@@ -46,9 +47,9 @@ namespace Documents.iOS.Utilities
         {
             switch (indexPath.Section)
             {
-                case SettingsSectionNumber:
+                case VisualSettingsSection:
                     break;
-                case OtherSettingsSectionNumber:
+				case AcknowledgementsSection:
                     var rowString = _otherSettingsDetails[indexPath.Row];
                     if (rowString == "Open Source Licenses")
                     {
@@ -64,40 +65,40 @@ namespace Documents.iOS.Utilities
         {
             switch (section)
             {
-                case SettingsSectionNumber:
-                    return "Settings";
+                case VisualSettingsSection:
+                    return "Visual Settings";
                 default:
-                    return "";
+                    return "Acknowledgements";
             }
         }
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
            
 
-            if(indexPath.Section == OtherSettingsSectionNumber)
+			if(indexPath.Section == AcknowledgementsSection)
             {
 
-                UITableViewCell cell = tableView.DequeueReusableCell(OtherSettingsCellIdentifier);
+                UITableViewCell cell = tableView.DequeueReusableCell(LicensesCellIdentifier);
 
                 //---- if there are no cells to reuse, create a new one
                 if (cell == null)
                 {
-                    cell = new UITableViewCell(UITableViewCellStyle.Default, OtherSettingsCellIdentifier);
+                    cell = new UITableViewCell(UITableViewCellStyle.Default, LicensesCellIdentifier);
                 }
                 var data = _otherSettingsDetails.ToList()[indexPath.Row];
                 cell.TextLabel.Text = data;
                 return cell;
             }
 
-            if (indexPath.Section == SettingsSectionNumber)
+            if (indexPath.Section == VisualSettingsSection)
             {
 
-                UITableViewCell cell = tableView.DequeueReusableCell(SettingsCellIdentifier);
+				UITableViewCell cell = tableView.DequeueReusableCell(SwitchCellIdentifier);
 
                 //---- if there are no cells to reuse, create a new one
                 if (cell == null)
                 {
-                    cell = new UITableViewCell(UITableViewCellStyle.Default, SettingsCellIdentifier);
+					cell = new UITableViewCell(UITableViewCellStyle.Default, SwitchCellIdentifier);
                 }
                 var data = _settingsDetails.ToList()[indexPath.Row];
                 cell.TextLabel.Text = data;
