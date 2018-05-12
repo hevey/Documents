@@ -18,6 +18,13 @@ namespace Documents.iOS.Managers
                 Uri = new Uri("https://github.com/adamhathcock/sharpcompress")
             });
 
+			data.Add(new LicenseDetails()
+			{
+				License = System.IO.File.ReadAllText(System.IO.Path.Combine(Foundation.NSBundle.MainBundle.BundlePath, "Licenses", "XamarinEssentials.txt")),
+				Title = "Xamarin Essentials",
+				Uri = new Uri("https://github.com/xamarin/Essentials")
+			});
+
             return data;
         }
     }

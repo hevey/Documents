@@ -18,18 +18,43 @@ namespace Documents.iOS
             base.ViewDidLoad();
             string[] tableItems = new string[] { };
             this.TableView.Source = new SettingsDataSource(this);
+
+			SetTheme();
+
+			NSNotificationCenter.DefaultCenter.AddObserver((NSString)"theme_changed", SetTheme);
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            
             this.NavigationController.SetNavigationBarHidden(false, false);
             this.Title = "Settings";
             this.TableView.RowHeight = UITableView.AutomaticDimension;
             this.TableView.EstimatedRowHeight = 40f;
+            
+            
         }
 
-        partial void CloseButton_Activated(UIBarButtonItem sender)
+		private void SetTheme(NSNotification obj)
+		{
+			UIView.Animate(0.3, () => {
+				SetTheme();
+			});
+
+		}
+
+        void SetTheme()
+		{
+			var theme = ThemeManager.GetTheme();
+            this.TableView.BackgroundColor = theme.TableBackgroundColour;
+            this.TableView.TintColor = theme.SeperatorColour;
+            this.TableView.SeparatorColor = theme.SeperatorColour;
+            this.NavigationController.NavigationBar.BarStyle = theme.NavigationBarStyle;
+			this.TableView.ReloadData();
+		}
+
+		partial void CloseButton_Activated(UIBarButtonItem sender)
         {
             this.DismissViewController(true, null);
         }

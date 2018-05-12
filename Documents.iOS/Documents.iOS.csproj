@@ -90,11 +90,8 @@
     <Reference Include="Xamarin.iOS" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="Plugin.Settings.Abstractions">
-      <HintPath>..\packages\Xam.Plugins.Settings.3.1.1\lib\Xamarin.iOS10\Plugin.Settings.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Settings">
-      <HintPath>..\packages\Xam.Plugins.Settings.3.1.1\lib\Xamarin.iOS10\Plugin.Settings.dll</HintPath>
+    <Reference Include="Xamarin.Essentials">
+      <HintPath>..\packages\Xamarin.Essentials.0.6.0-preview\lib\xamarinios10\Xamarin.Essentials.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -436,7 +433,11 @@
       <DependentUpon>ImportTableViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\ImportDataSource.cs" />
-    <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Utilities\Settings.cs" />
+    <Compile Include="Enums\SettingsCellTypeEnum.cs" />
+    <Compile Include="Models\SettingsCell.cs" />
+    <Compile Include="Managers\ThemeManager.cs" />
+    <Compile Include="Models\Theme.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\TemplateFiles\Untitled.key" />
@@ -450,6 +451,7 @@
     <Content Include="Licenses\SharpCompress.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Licenses\XamarinEssentials.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
