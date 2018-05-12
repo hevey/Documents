@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Documents.iOS.Managers;
 using Documents.iOS.Models;
 using Foundation;
 using UIKit;
@@ -13,10 +14,12 @@ namespace Documents.iOS.Utilities
 
         string LicenseCellIdentifier = "LicenseCell";
         IEnumerable<LicenseDetails> _licenses;
+		Theme _theme;
 
         public OpenSourceLicenseDataSource(IEnumerable<LicenseDetails> Licenses)
         {
             _licenses = Licenses;
+			_theme = ThemeManager.GetTheme();
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -77,6 +80,15 @@ namespace Documents.iOS.Utilities
                 cell.DetailTextLabel.Text = data.License;
                 cell.DetailTextLabel.Lines = (data.License.Length - data.License.Replace(Environment.NewLine, string.Empty).Length) * 4;
                 cell.DetailTextLabel.AdjustsFontSizeToFitWidth = true;
+
+				cell.BackgroundColor = _theme.CellBackgroundColour;
+                cell.TintColor = _theme.TextColour;
+                cell.TextLabel.TextColor = _theme.TextColour;
+                cell.TextLabel.HighlightedTextColor = _theme.HighlightTextColour;
+				cell.DetailTextLabel.TextColor = _theme.TextColour;
+				cell.DetailTextLabel.HighlightedTextColor = _theme.HighlightTextColour;
+                
+
                 return cell;
             }
             return null;

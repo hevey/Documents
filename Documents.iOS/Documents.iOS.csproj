@@ -90,6 +90,9 @@
     <Reference Include="Xamarin.iOS" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="Xamarin.Essentials">
+      <HintPath>..\packages\Xamarin.Essentials.0.6.0-preview\lib\xamarinios10\Xamarin.Essentials.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">
@@ -430,6 +433,11 @@
       <DependentUpon>ImportTableViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\ImportDataSource.cs" />
+    <Compile Include="Utilities\Settings.cs" />
+    <Compile Include="Enums\SettingsCellTypeEnum.cs" />
+    <Compile Include="Models\SettingsCell.cs" />
+    <Compile Include="Managers\ThemeManager.cs" />
+    <Compile Include="Models\Theme.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\TemplateFiles\Untitled.key" />
@@ -443,6 +451,7 @@
     <Content Include="Licenses\SharpCompress.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Licenses\XamarinEssentials.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

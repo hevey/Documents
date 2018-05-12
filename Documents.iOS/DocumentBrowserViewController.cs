@@ -5,6 +5,7 @@ using Documents.iOS.Managers;
 using System.Collections.Generic;
 using Documents.iOS.Buttons;
 using Documents.iOS.Delegates;
+using Foundation;
 
 namespace Documents.iOS
 {
@@ -16,14 +17,24 @@ namespace Documents.iOS
             // Note: this .ctor should not contain any initialization logic.
         }
 
-        public override void ViewDidLoad()
+		public override void ViewWillAppear(bool animated)
+		{
+			base.ViewWillAppear(animated);
+			SetTheme();
+            
+		}
+
+		public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
-
+            
             AllowsDocumentCreation = true;
             AllowsPickingMultipleItems = true;
-            BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Light;
+
+
+			NSNotificationCenter.DefaultCenter.AddObserver((NSString)"theme_changed", SetTheme);
+
             CustomActions = SetupActions();
             AdditionalTrailingNavigationBarButtonItems = SetupTrailingButtons();
             Delegate = new DocumentBrowserViewControllerDelegate();
@@ -39,8 +50,7 @@ namespace Documents.iOS
             }
         }
 
-
-        UIDocumentBrowserAction[] SetupActions()
+		UIDocumentBrowserAction[] SetupActions()
         {
             IActionManager actionManager = new ActionManager();
             var list = new List<UIDocumentBrowserAction>();
@@ -75,5 +85,25 @@ namespace Documents.iOS
         }
 
        
+		void SetTheme()
+		{
+			if (ThemeManager.GetThemeKey() == "light")
+            {
+                BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Light;
+            }
+            else
+            {
+                BrowserUserInterfaceStyle = UIDocumentBrowserUserInterfaceStyle.Dark;
+            }
+		}
+
+		void SetTheme(NSNotification obj)
+        {
+			UIView.Animate(0.3, () =>
+			{
+				SetTheme();
+			});
+        }
+
     }
 }

@@ -21,6 +21,8 @@ namespace Documents.iOS
             base.ViewDidLoad();
             string[] tableItems = new string[] { };
             this.TableView.Source = new OpenSourceLicenseDataSource(_licenseManager.GetLicenseDetails());
+
+
         }
 
         public override void ViewWillAppear(bool animated)
@@ -30,6 +32,17 @@ namespace Documents.iOS
             this.Title = "Licenses";
             this.TableView.RowHeight = UITableView.AutomaticDimension;
             this.TableView.EstimatedRowHeight = 40f;
+
+			SetTheme();
+        }
+        
+		private void SetTheme()
+        {
+            var theme = ThemeManager.GetTheme();
+            this.TableView.BackgroundColor = theme.TableBackgroundColour;
+            this.TableView.TintColor = theme.SeperatorColour;
+            this.TableView.SeparatorColor = theme.SeperatorColour;
+			this.NavigationController.NavigationBar.BarStyle = theme.NavigationBarStyle;
         }
     }
 }

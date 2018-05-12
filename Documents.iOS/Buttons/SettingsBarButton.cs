@@ -31,10 +31,12 @@ namespace Documents.iOS.Buttons
 
             var viewController = storyboard.InstantiateViewController("Settings");
 
+			viewController.ModalPresentationStyle = UIModalPresentationStyle.FormSheet;
+
             if (viewController == null)
                 return;
 
-            _view.PresentViewController(viewController, true, null);
+			_view.PresentViewController(viewController, true, null);
         
         }
     }
