@@ -7,7 +7,7 @@ using Documents.iOS.Models;
 using System.Linq;
 using Documents.iOS.Enums;
 using Documents.iOS.Managers;
-
+using Xamarin.Essentials;
 
 namespace Documents.iOS.Utilities
 {
@@ -73,11 +73,26 @@ namespace Documents.iOS.Utilities
             {
                 case VisualSettingsSection:
                     return "Visual Settings";
-                default:
+				case AcknowledgementsSection:
                     return "Acknowledgements";
+				default:
+					return "";
             }
         }
-        public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
+
+		public override string TitleForFooter(UITableView tableView, nint section)
+		{
+			switch (section)
+			{
+				case AcknowledgementsSection:
+					return $"Version {AppInfo.VersionString} ({AppInfo.BuildString})";
+                default:
+                    return "";
+			}
+
+            
+		}
+		public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
            
 
