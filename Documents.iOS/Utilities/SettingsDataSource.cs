@@ -26,7 +26,12 @@ namespace Documents.iOS.Utilities
 
         public SettingsDataSource(UITableViewController controller)
         {
-			_visualUISettings = new List<SettingsCell>{ new SettingsCell { Title = "Dark Theme", Type = SettingsCellTypeEnum.Switch, EventHandler = ChangeTheme}};
+			_visualUISettings = new List<SettingsCell>
+            { 
+                new SettingsCell { Title = "Dark Theme", Type = SettingsCellTypeEnum.Switch, EventHandler = ChangeTheme },
+                new SettingsCell { Title = "Change Tint", Type = SettingsCellTypeEnum.Switch, EventHandler = ChangeTint }
+
+            };
             _otherSettingsDetails = new List<string>{ "Open Source Licenses" };
             _viewController = controller;
 			_theme = ThemeManager.GetTheme();
@@ -144,6 +149,9 @@ namespace Documents.iOS.Utilities
 				case "Dark Theme":
 					cellSwitch.On = ThemeManager.GetThemeKey() == "dark";
 					break;
+                case "Change Tint":
+                    cellSwitch.On = ThemeManager.GetTintColour() == UIColor.Orange;
+                    break;
 			}
             
 
@@ -185,7 +193,23 @@ namespace Documents.iOS.Utilities
 
          
 			NSNotificationCenter.DefaultCenter.PostNotificationName("theme_changed", null);
-        }   
+        } 
+
+        private void ChangeTint(object sender, EventArgs e)
+        {
+            var uiSwitch = sender as UISwitch;
+            if (uiSwitch.On)
+            {
+                ThemeManager.SetTintKey("orange");
+            }
+            else
+            {
+                ThemeManager.SetTintKey("blue");
+            }
+
+
+            NSNotificationCenter.DefaultCenter.PostNotificationName("tint_changed", null);
+        }
 
 	}
 }

@@ -21,6 +21,7 @@ namespace Documents.iOS
 		{
 			base.ViewWillAppear(animated);
 			SetTheme();
+            SetTint();
             
 		}
 
@@ -34,6 +35,7 @@ namespace Documents.iOS
 
 
 			NSNotificationCenter.DefaultCenter.AddObserver((NSString)"theme_changed", SetTheme);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"tint_changed", SetTint);
 
             CustomActions = SetupActions();
             AdditionalTrailingNavigationBarButtonItems = SetupTrailingButtons();
@@ -97,12 +99,26 @@ namespace Documents.iOS
             }
 		}
 
+        void SetTint()
+        {
+            View.TintColor = ThemeManager.GetTintColour();
+        }
+
 		void SetTheme(NSNotification obj)
         {
 			UIView.Animate(0.3, () =>
 			{
 				SetTheme();
 			});
+        }
+
+
+        void SetTint(NSNotification obj)
+        {
+            UIView.Animate(0.3, () =>
+            {
+                SetTint();
+            });
         }
 
     }

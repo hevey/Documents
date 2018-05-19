@@ -16,6 +16,16 @@ namespace Documents.iOS.Managers
 			Preferences.Set("theme_key", themeKey);
 		}
 
+        public static string GetTintKey()
+        {
+            return Preferences.Get("tint_key", "blue");
+        }
+
+        public static void SetTintKey(string colour)
+        {
+            Preferences.Set("tint_key", colour);
+        }
+
 		public static Theme GetTheme()
 		{
 			var themeKey = GetThemeKey();
@@ -47,5 +57,21 @@ namespace Documents.iOS.Managers
 
 
 		}
+    
+        public static UIColor GetTintColour()
+        {
+            var tintKey = GetTintKey();
+
+            switch(tintKey)
+            {
+                case "blue":
+                    return UIColor.FromRGBA(0f, 0.35f, 1f, 1f);
+                case "orange":
+                    return UIColor.Orange;
+                default:
+                    return UIColor.FromRGBA(0f, 0.35f, 1f, 1f);
+            }
+             
+        }
     }
 }
