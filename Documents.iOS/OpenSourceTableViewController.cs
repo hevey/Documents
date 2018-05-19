@@ -19,8 +19,8 @@ namespace Documents.iOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            string[] tableItems = new string[] { };
-            this.TableView.Source = new OpenSourceLicenseDataSource(_licenseManager.GetLicenseDetails());
+            string[] tableItems = { };
+            TableView.Source = new OpenSourceLicenseDataSource(_licenseManager.GetLicenseDetails());
 
 
         }
@@ -28,21 +28,27 @@ namespace Documents.iOS
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            this.NavigationController.SetNavigationBarHidden(false, false);
-            this.Title = "Licenses";
-            this.TableView.RowHeight = UITableView.AutomaticDimension;
-            this.TableView.EstimatedRowHeight = 40f;
+            NavigationController.SetNavigationBarHidden(false, false);
+            Title = "Licenses";
+            TableView.RowHeight = UITableView.AutomaticDimension;
+            TableView.EstimatedRowHeight = 40f;
 
 			SetTheme();
+            SetTint();
         }
         
 		private void SetTheme()
         {
             var theme = ThemeManager.GetTheme();
-            this.TableView.BackgroundColor = theme.TableBackgroundColour;
-            this.TableView.TintColor = theme.SeperatorColour;
-            this.TableView.SeparatorColor = theme.SeperatorColour;
-			this.NavigationController.NavigationBar.BarStyle = theme.NavigationBarStyle;
+            TableView.BackgroundColor = theme.TableBackgroundColour;
+            TableView.TintColor = theme.SeperatorColour;
+            TableView.SeparatorColor = theme.SeperatorColour;
+			NavigationController.NavigationBar.BarStyle = theme.NavigationBarStyle;
+        }
+
+        void SetTint()
+        {
+            NavigationController.NavigationBar.TintColor = ThemeManager.GetTintColour();
         }
     }
 }

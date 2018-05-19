@@ -20,8 +20,11 @@ namespace Documents.iOS
             this.TableView.Source = new SettingsDataSource(this);
 
 			SetTheme();
+            SetTint();
 
 			NSNotificationCenter.DefaultCenter.AddObserver((NSString)"theme_changed", SetTheme);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"tint_changed", SetTint);
+
         }
 
         public override void ViewWillAppear(bool animated)
@@ -57,6 +60,19 @@ namespace Documents.iOS
 		partial void CloseButton_Activated(UIBarButtonItem sender)
         {
             this.DismissViewController(true, null);
+        }
+
+        private void SetTint(NSNotification obj)
+        {
+            UIView.Animate(0.3, () => {
+                SetTint();
+            });
+
+        }
+
+        void SetTint()
+        {
+            CloseButton.TintColor = ThemeManager.GetTintColour();
         }
     }
 }
