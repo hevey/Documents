@@ -81,9 +81,6 @@
     <CodesignProvision>VS: com.glennhevey.Documents Development</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpCompress, Version=0.20.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpCompress.0.20.0\lib\netstandard2.0\SharpCompress.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -92,6 +89,9 @@
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="Xamarin.Essentials">
       <HintPath>..\packages\Xamarin.Essentials.0.6.0-preview\lib\xamarinios10\Xamarin.Essentials.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpCompress">
+      <HintPath>..\packages\SharpCompress.0.21.1\lib\netstandard2.0\SharpCompress.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

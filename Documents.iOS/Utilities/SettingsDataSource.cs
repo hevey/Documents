@@ -21,6 +21,7 @@ namespace Documents.iOS.Utilities
 
 		private List<SettingsCell> _visualUISettings; 
         private List<string> _otherSettingsDetails;
+        private List<string> tintColours = new List<string> { "blue", "orange"};
         private UITableViewController _viewController;
 		private Theme _theme;
 
@@ -29,7 +30,7 @@ namespace Documents.iOS.Utilities
 			_visualUISettings = new List<SettingsCell>
             { 
                 new SettingsCell { Title = "Dark Theme", Type = SettingsCellTypeEnum.Switch, EventHandler = ChangeTheme },
-                new SettingsCell { Title = "Change Tint", Type = SettingsCellTypeEnum.Switch, EventHandler = ChangeTint }
+                new SettingsCell { Title = "Change Tint", Type = SettingsCellTypeEnum.Dropdown, EventHandler = ChangeTint }
 
             };
             _otherSettingsDetails = new List<string>{ "Open Source Licenses" };
@@ -132,6 +133,10 @@ namespace Documents.iOS.Utilities
 					case SettingsCellTypeEnum.Switch:
 						cell = CreateSwitchCell(tableView, data);
 						break;
+                    case SettingsCellTypeEnum.Dropdown:
+                        cell = CreateDropdownCell(tableView);
+                        break;
+                        
 				}
 
                 return cell;
@@ -139,7 +144,12 @@ namespace Documents.iOS.Utilities
             return null;
         }
 
-		private UITableViewCell CreateSwitchCell(UITableView tableView, SettingsCell settingsCell)
+        private UITableViewCell CreateDropdownCell(UITableView tableView)
+        {
+            throw new NotImplementedException();
+        }
+
+        private UITableViewCell CreateSwitchCell(UITableView tableView, SettingsCell settingsCell)
 		{
 			UITableViewCell cell = tableView.DequeueReusableCell(SwitchCellIdentifier);
             var cellSwitch = new UISwitch();
