@@ -109,20 +109,36 @@ namespace Documents.iOS.Delegates
 
                 //Add Action
                 newFilenameAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (sender) => {
+                    NSFileCoordinator fileCoordinator = new NSFileCoordinator();
+                    NSError err;
+                    var fileManager = NSFileManager.DefaultManager;
+
                     var newFileName = newFilenameAlert.TextFields.First().Text;
                     if (newFileName != "")
                     {
-                        var newFilePath = Path.Combine(Path.GetDirectoryName(destinationUrl.RelativePath), newFileName);
+                        //var newFilePath = Path.Combine(Path.GetDirectoryName(destinationUrl.Path), newFileName);
+                        var newFilePath = destinationUrl.LastPathComponent;
                         var fileNameOnly = Path.GetFileNameWithoutExtension(newFilePath);
 
 
                         while (File.Exists($"{newFilePath}{extension}"))
                         {
                             string tempFileName = $"{fileNameOnly} {counter++}";
-                            newFilePath = Path.Combine(Path.GetDirectoryName(destinationUrl.RelativePath), tempFileName);
+                            newFilePath = Path.Combine(Path.GetDirectoryName(destinationUrl.Path), tempFileName);
                         }
 
-                        File.Move(destinationUrl.RelativePath, $"{newFilePath}{extension}");
+                        fileCoordinator.CoordinateWriteWrite(destinationUrl, NSFileCoordinatorWritingOptions.ForMoving, new NSUrl($"{newFilePath}{extension}"), NSFileCoordinatorWritingOptions.ForDeleting, out err, (newReadingUrl, newWritingUrl) =>
+                        {
+                            var securityEnabledMove = newReadingUrl.StartAccessingSecurityScopedResource();
+                            var securityEnabledDelete = newWritingUrl.StartAccessingSecurityScopedResource();
+
+                            fileManager.Move(newReadingUrl, newWritingUrl, out err);
+
+                            newReadingUrl.StopAccessingSecurityScopedResource();
+                            newWritingUrl.StopAccessingSecurityScopedResource();
+                        });
+
+                        //File.Move(destinationUrl.RelativePath, $"{newFilePath}{extension}");
 
                     }
                     else
@@ -158,52 +174,52 @@ namespace Documents.iOS.Delegates
             
         }
 
-		private void CancelPopup(UIAlertAction uiAlertAction)
+		void CancelPopup(UIAlertAction uiAlertAction)
         {
             _importHandler(null, UIDocumentBrowserImportMode.None);
         }
 
-        private void CreateTxt(UIAlertAction uiAlertAction)
+        void CreateTxt(UIAlertAction uiAlertAction)
         {
             CreateFile("txt");
         }
 
-        private void CreateKeynote(UIAlertAction uiAlertAction)
+        void CreateKeynote(UIAlertAction uiAlertAction)
         {
             CreateFile("key");
         }
 
-        private void CreateNumbers(UIAlertAction uiAlertAction)
+        void CreateNumbers(UIAlertAction uiAlertAction)
         {
             CreateFile("numbers");
         }
 
-        private void CreatePages(UIAlertAction uiAlertAction)
+        void CreatePages(UIAlertAction uiAlertAction)
         {
             CreateFile("pages");
         }
 
-        private void CreatePptx(UIAlertAction uiAlertAction)
+        void CreatePptx(UIAlertAction uiAlertAction)
         {
             CreateFile("pptx");
         }
 
-        private void CreateXlsx(UIAlertAction uiAlertAction)
+        void CreateXlsx(UIAlertAction uiAlertAction)
         {
             CreateFile("xlsx");
         }
 
-        private void CreateDocx(UIAlertAction uiAlertAction)
+        void CreateDocx(UIAlertAction uiAlertAction)
         {
             CreateFile("docx");
         }
 
-        private void CreateOther(UIAlertAction uiAlertAction)
+        void CreateOther(UIAlertAction uiAlertAction)
         {
             CreateBlankFile();
         }
 
-        private void CreateFile(string fileType)
+        void CreateFile(string fileType)
         {
             _newDocumentUrl = NSBundle.MainBundle.GetUrlForResource("Untitled", fileType, "Library/TemplateFiles");
 
@@ -218,7 +234,7 @@ namespace Documents.iOS.Delegates
            
         }
 
-        private void CreateBlankFile()
+        void CreateBlankFile()
         {
             _newDocumentUrl = NSBundle.MainBundle.GetUrlForResource("Untitled", "Blank", "Library/TemplateFiles");
 
