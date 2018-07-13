@@ -400,7 +400,7 @@
     <Compile Include="Enums\UnarchiveLocationEnum.cs" />
     <Compile Include="Enums\ArchiveTypeEnum.cs" />
     <Compile Include="Actions\ICustomAction.cs" />
-    <Compile Include="Actions\UnarchiveAction.cs" />
+    <Compile Include="Actions\ExtractAction.cs" />
     <Compile Include="Managers\IActionManager.cs" />
     <Compile Include="Managers\ActionManager.cs" />
     <Compile Include="Actions\RenameWithExtension.cs" />

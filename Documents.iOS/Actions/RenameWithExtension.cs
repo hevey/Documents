@@ -9,11 +9,11 @@ namespace Documents.iOS.Actions
 {
     public class RenameWithExtension : ICustomAction
     {
-        private UIViewController _view;
+        private DocumentBrowserViewController _view;
 
         public RenameWithExtension(UIViewController view)
         {
-            _view = view;
+            _view = (DocumentBrowserViewController)view;
         }
 
 
@@ -50,15 +50,14 @@ namespace Documents.iOS.Actions
 
                     blankExtensionAlert.AddAction(UIAlertAction.Create("Blank", UIAlertActionStyle.Default, (sen) =>
                     {
-                        File.Move(obj[0].Path, $"{Path.Combine(Path.GetDirectoryName(obj[0].Path), newName)}");
+                        moveFile(obj[0], NSUrl.FromFilename($"{Path.Combine(Path.GetDirectoryName(obj[0].Path), newName)}"));
                     }));
 
                     blankExtensionAlert.AddAction(UIAlertAction.Create($"{previousExtension}",
                         UIAlertActionStyle.Default, (sen) =>
                         {
                             newName += $"{previousExtension}";
-
-                            File.Move(obj[0].Path, $"{Path.Combine(Path.GetDirectoryName(obj[0].Path), newName)}");
+                        moveFile(obj[0], NSUrl.FromFilename($"{Path.Combine(Path.GetDirectoryName(obj[0].Path), newName)}"));
                         }));
 
 
@@ -76,7 +75,7 @@ namespace Documents.iOS.Actions
                 }
                 else 
                 {
-                    File.Move(obj[0].Path, $"{Path.Combine(Path.GetDirectoryName(obj[0].Path), newName)}");
+                    moveFile(obj[0], NSUrl.FromFilename($"{Path.Combine(Path.GetDirectoryName(obj[0].Path), newName)}"));
                 }
             }));
 
@@ -88,12 +87,60 @@ namespace Documents.iOS.Actions
 
         public UIDocumentBrowserAction SetupAction()
         {
-            var renameWithExt = new UIDocumentBrowserAction("com.glennhevey.rename-with-extension", "Full Rename",
+            var renameWithExt = new UIDocumentBrowserAction("com.glennhevey.documents.rename-with-extension", "Rename with extension",
                 UIDocumentBrowserActionAvailability.Menu, Action);
 
             renameWithExt.SupportedContentTypes = new string[] {"public.item"};
 
             return renameWithExt;
+        }
+
+        void moveFile(NSUrl oldFilename, NSUrl newFilename)
+        {
+            NSError error;
+            NSFileCoordinator fileCoordinator = new NSFileCoordinator();
+
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var tmpdir = Path.Combine(documents, "..", "tmp");
+
+            var newFilePath = Path.Combine(tmpdir, newFilename.LastPathComponent);
+
+            var tempUrl = NSUrl.FromFilename(newFilePath);
+            fileCoordinator.CoordinateWrite(oldFilename, NSFileCoordinatorWritingOptions.ForReplacing, out error, (NSUrl obj) =>
+            {
+                oldFilename.StartAccessingSecurityScopedResource();
+
+
+
+                if(File.Exists(tempUrl.Path))
+                {
+                    File.Delete(tempUrl.Path);
+                }
+
+                NSFileManager.DefaultManager.Copy(oldFilename, tempUrl, out error);
+
+
+                _view.ImportDocument(tempUrl, oldFilename, UIDocumentBrowserImportMode.Move, (arg1, arg2) => {
+
+                    if(arg2 != null)
+                    {
+                        Console.WriteLine(arg2);
+                        File.Delete(tempUrl.Path);
+                    }
+                    else
+                    {
+                        NSFileManager.DefaultManager.Remove(oldFilename, out error);
+                    }
+
+                    oldFilename.StopAccessingSecurityScopedResource();
+                });
+
+                if (error != null)
+                {
+                    Console.WriteLine(error);
+                }
+            });
+
         }
     }
 }

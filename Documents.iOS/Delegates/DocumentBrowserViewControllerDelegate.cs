@@ -55,10 +55,19 @@ namespace Documents.iOS.Delegates
         //Open Exisiting Document
         public override void DidPickDocumentUrls(UIDocumentBrowserViewController controller, NSUrl[] documentUrls)
         {
-            var docController = UIDocumentInteractionController.FromUrl(documentUrls[0]);
+            NSError error;
+            var fileCoordinator = new NSFileCoordinator();
 
-            docController.Delegate = new DocumentInteractionControllerDelegate(controller);
-            docController.PresentOptionsMenu(new CGRect(controller.View.Bounds.Right - 147.5, controller.View.Bounds.Top + 55, 0, 0), controller.View, true);
+            fileCoordinator.CoordinateRead(documentUrls[0], NSFileCoordinatorReadingOptions.WithoutChanges, out error, (NSUrl obj) =>
+            {
+                documentUrls[0].StartAccessingSecurityScopedResource();
+                var docController = UIDocumentInteractionController.FromUrl(documentUrls[0]);
+
+                docController.Delegate = new DocumentInteractionControllerDelegate(controller);
+                docController.PresentOptionsMenu(new CGRect(controller.View.Bounds.Right - 147.5, controller.View.Bounds.Top + 55, 0, 0), controller.View, true);
+                documentUrls[0].StopAccessingSecurityScopedResource();
+            });
+
 
         }
 
