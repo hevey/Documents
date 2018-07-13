@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleName</key>
-	<string>Documents</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.glennhevey.Documents</string>
 	<key>CFBundleShortVersionString</key>
@@ -53,5 +51,7 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIconPurple.appiconset</string>
+	<key>CFBundleName</key>
+	<string>LocalDoc</string>
 </dict>
 </plist>

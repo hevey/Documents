@@ -11,17 +11,17 @@ using Documents.iOS.Enums;
 
 namespace Documents.iOS.Actions
 {
-    public class UnarchiveAction : ICustomAction
+    public class ExtractAction : ICustomAction
     {
         private UIViewController _view;
-        public UnarchiveAction(UIViewController view)
+        public ExtractAction(UIViewController view)
         {
             _view = view;
         }
 
         public UIDocumentBrowserAction SetupAction()
         {
-            var unarchiveExt = new UIDocumentBrowserAction("com.glennhevey.unarchive", "Extract", UIDocumentBrowserActionAvailability.Menu, Action);
+            var unarchiveExt = new UIDocumentBrowserAction("com.glennhevey.documents.extract", "Extract", UIDocumentBrowserActionAvailability.Menu, Action);
             unarchiveExt.SupportedContentTypes = new string[] { "public.archive", "public.rar", "public.7z" };
             return unarchiveExt;
         }

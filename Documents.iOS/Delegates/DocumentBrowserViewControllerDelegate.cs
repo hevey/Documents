@@ -19,218 +19,268 @@ namespace Documents.iOS.Delegates
             _importHandler = importHandler;
             _controller = controller;
 
-            var newItemPopOver = UIAlertController.Create(null,null,UIAlertControllerStyle.ActionSheet);
-            newItemPopOver.AddAction(UIAlertAction.Create("Word File (.docx)",UIAlertActionStyle.Default,CreateDocx));
-            newItemPopOver.AddAction(UIAlertAction.Create("Excel File (.xlsx)",UIAlertActionStyle.Default,CreateXlsx));
-            newItemPopOver.AddAction(UIAlertAction.Create("Powerpoint File (.pptx)",UIAlertActionStyle.Default,CreatePptx));
-            newItemPopOver.AddAction(UIAlertAction.Create("Pages File (.pages)",UIAlertActionStyle.Default,CreatePages));
-            newItemPopOver.AddAction(UIAlertAction.Create("Numbers File (.numbers)",UIAlertActionStyle.Default,CreateNumbers));
-            newItemPopOver.AddAction(UIAlertAction.Create("Keynote File (.key)",UIAlertActionStyle.Default,CreateKeynote));
-            newItemPopOver.AddAction(UIAlertAction.Create("Text File (.txt)",UIAlertActionStyle.Default,CreateTxt));
+            var newItemPopOver = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
+            newItemPopOver.AddAction(UIAlertAction.Create("Word File (.docx)", UIAlertActionStyle.Default, CreateDocx));
+            newItemPopOver.AddAction(UIAlertAction.Create("Excel File (.xlsx)", UIAlertActionStyle.Default, CreateXlsx));
+            newItemPopOver.AddAction(UIAlertAction.Create("Powerpoint File (.pptx)", UIAlertActionStyle.Default, CreatePptx));
+            newItemPopOver.AddAction(UIAlertAction.Create("Pages File (.pages)", UIAlertActionStyle.Default, CreatePages));
+            newItemPopOver.AddAction(UIAlertAction.Create("Numbers File (.numbers)", UIAlertActionStyle.Default, CreateNumbers));
+            newItemPopOver.AddAction(UIAlertAction.Create("Keynote File (.key)", UIAlertActionStyle.Default, CreateKeynote));
+            newItemPopOver.AddAction(UIAlertAction.Create("Text File (.txt)", UIAlertActionStyle.Default, CreateTxt));
             newItemPopOver.AddAction(UIAlertAction.Create("Other", UIAlertActionStyle.Default, CreateOther));
             newItemPopOver.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, CancelPopup));
-            
+
             if (newItemPopOver.PopoverPresentationController != null)
             {
                 //FIXME: remove hacky SourceRect code!!!
                 newItemPopOver.PopoverPresentationController.SourceView = controller.View;
                 newItemPopOver.PopoverPresentationController.PermittedArrowDirections =
                     UIPopoverArrowDirection.Up;
-                newItemPopOver.PopoverPresentationController.SourceRect = new CGRect(controller.View.Bounds.Right - 147.5, controller.View.Bounds.Top + 55 , 0, 0);
+                newItemPopOver.PopoverPresentationController.SourceRect = new CGRect(controller.View.Bounds.Right - 147.5, controller.View.Bounds.Top + 55, 0, 0);
                 //newItemPopOver.PopoverPresentationController.BarButtonItem = controller.ChildViewControllers[0].NavigationItem.RightBarButtonItem;
             }
-            
+
             controller.PresentViewController(newItemPopOver, true, null);
 
 
         }
 
         //Created Document
-		public override void DidImportDocument(UIDocumentBrowserViewController controller, NSUrl sourceUrl, NSUrl destinationUrl)
-		{
-            var creationAttributes = new NSFileAttributes();
-            creationAttributes.CreationDate = NSDate.Now;
-            creationAttributes.ModificationDate = NSDate.Now;
+        public override void DidImportDocument(UIDocumentBrowserViewController controller, NSUrl sourceUrl, NSUrl destinationUrl)
+        {
 
-            NSFileManager.DefaultManager.SetAttributes(creationAttributes, destinationUrl.RelativePath);
+        }
 
-            var extension = Path.GetExtension(destinationUrl.AbsoluteString);
-
-            var counter = 1;
-
-
-            if(extension == ".Blank")
-            {
-                var newFilenameAlert = UIAlertController.Create("File Name", "Please enter the name of your file", UIAlertControllerStyle.Alert);
-                newFilenameAlert.AddTextField(textField => {
-                    // If you need to customize the text field, you can do so here.
-                });
-
-                //Add Action
-                newFilenameAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (sender) => {
-                    var newFileName = newFilenameAlert.TextFields.First().Text;
-                    if (newFileName != "")
-                    {
-                        var newFilePath = Path.Combine(Path.GetDirectoryName(destinationUrl.RelativePath), newFileName);
-                        var fileNameOnly = Path.GetFileNameWithoutExtension(newFilePath);
-                        var newExtension = Path.GetExtension(newFileName);
-
-
-                        while (File.Exists(newFilePath))
-                        {
-                            string tempFileName = $"{fileNameOnly} {counter++}{newExtension}";
-                            newFilePath = Path.Combine(Path.GetDirectoryName(destinationUrl.RelativePath), tempFileName);
-                        }
-                           
-                        File.Move(destinationUrl.RelativePath, $"{newFilePath}");
-                    }
-                    else
-                    {
-                        // Present Alert
-                        _controller.PresentViewController(newFilenameAlert, true, null);
-                    }
-
-                }));
-
-                newFilenameAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel,(sender) => {
-                    File.Delete(destinationUrl.RelativePath);
-                }));
-
-                // Present Alert
-                _controller.PresentViewController(newFilenameAlert, true, null);
-
-            } 
-            else 
-            {
-                var newFilenameAlert = UIAlertController.Create("File Name", "Please enter the name of your file", UIAlertControllerStyle.Alert);
-                newFilenameAlert.AddTextField(textField => {
-                    // If you need to customize the text field, you can do so here.
-                });
-
-                //Add Action
-                newFilenameAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (sender) => {
-                    var newFileName = newFilenameAlert.TextFields.First().Text;
-                    if (newFileName != "")
-                    {
-                        var newFilePath = Path.Combine(Path.GetDirectoryName(destinationUrl.RelativePath), newFileName);
-                        var fileNameOnly = Path.GetFileNameWithoutExtension(newFilePath);
-
-
-                        while (File.Exists($"{newFilePath}{extension}"))
-                        {
-                            string tempFileName = $"{fileNameOnly} {counter++}";
-                            newFilePath = Path.Combine(Path.GetDirectoryName(destinationUrl.RelativePath), tempFileName);
-                        }
-
-                        File.Move(destinationUrl.RelativePath, $"{newFilePath}{extension}");
-
-                    }
-                    else
-                    {
-                        // Present Alert
-                        _controller.PresentViewController(newFilenameAlert, true, null);
-                    }
-
-                }));
-
-                newFilenameAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (sender) => {
-                    File.Delete(destinationUrl.RelativePath);
-                }));
-                // Present Alert
-                _controller.PresentViewController(newFilenameAlert, true, null);
-
-            }
-		}
 
         //Open Exisiting Document
         public override void DidPickDocumentUrls(UIDocumentBrowserViewController controller, NSUrl[] documentUrls)
         {
-            var docController = UIDocumentInteractionController.FromUrl(documentUrls[0]);
+            NSError error;
+            var fileCoordinator = new NSFileCoordinator();
 
-            docController.Delegate = new DocumentInteractionControllerDelegate(controller);
-            docController.PresentOptionsMenu(new CGRect(controller.View.Bounds.Right - 147.5, controller.View.Bounds.Top + 55, 0, 0), controller.View, true);
+            fileCoordinator.CoordinateRead(documentUrls[0], NSFileCoordinatorReadingOptions.WithoutChanges, out error, (NSUrl obj) =>
+            {
+                documentUrls[0].StartAccessingSecurityScopedResource();
+                var docController = UIDocumentInteractionController.FromUrl(documentUrls[0]);
+
+                docController.Delegate = new DocumentInteractionControllerDelegate(controller);
+                docController.PresentOptionsMenu(new CGRect(controller.View.Bounds.Right - 147.5, controller.View.Bounds.Top + 55, 0, 0), controller.View, true);
+                documentUrls[0].StopAccessingSecurityScopedResource();
+            });
+
 
         }
 
         //Failed to create Document
-		public override void FailedToImportDocument(UIDocumentBrowserViewController controller, NSUrl documentUrl, NSError error)
+        public override void FailedToImportDocument(UIDocumentBrowserViewController controller, NSUrl documentUrl, NSError error)
         {
-            
+            Console.WriteLine(error);
         }
 
-		private void CancelPopup(UIAlertAction uiAlertAction)
+        void CancelPopup(UIAlertAction uiAlertAction)
         {
             _importHandler(null, UIDocumentBrowserImportMode.None);
         }
 
-        private void CreateTxt(UIAlertAction uiAlertAction)
+        void CreateTxt(UIAlertAction uiAlertAction)
         {
             CreateFile("txt");
         }
 
-        private void CreateKeynote(UIAlertAction uiAlertAction)
+        void CreateKeynote(UIAlertAction uiAlertAction)
         {
             CreateFile("key");
         }
 
-        private void CreateNumbers(UIAlertAction uiAlertAction)
+        void CreateNumbers(UIAlertAction uiAlertAction)
         {
             CreateFile("numbers");
         }
 
-        private void CreatePages(UIAlertAction uiAlertAction)
+        void CreatePages(UIAlertAction uiAlertAction)
         {
             CreateFile("pages");
         }
 
-        private void CreatePptx(UIAlertAction uiAlertAction)
+        void CreatePptx(UIAlertAction uiAlertAction)
         {
             CreateFile("pptx");
         }
 
-        private void CreateXlsx(UIAlertAction uiAlertAction)
+        void CreateXlsx(UIAlertAction uiAlertAction)
         {
             CreateFile("xlsx");
         }
 
-        private void CreateDocx(UIAlertAction uiAlertAction)
+        void CreateDocx(UIAlertAction uiAlertAction)
         {
             CreateFile("docx");
         }
 
-        private void CreateOther(UIAlertAction uiAlertAction)
+        void CreateOther(UIAlertAction uiAlertAction)
         {
             CreateBlankFile();
         }
 
-        private void CreateFile(string fileType)
+        void CreateFile(string fileType)
         {
-            _newDocumentUrl = NSBundle.MainBundle.GetUrlForResource("Untitled", fileType, "Library/TemplateFiles");
+            var newFilenameAlert = UIAlertController.Create("File Name", "Please enter the name of your file", UIAlertControllerStyle.Alert);
+            newFilenameAlert.AddTextField(textField =>
+            {
+            // If you need to customize the text field, you can do so here.
+            });
 
-            if (_newDocumentUrl == null)
+
+            //Add Action
+            newFilenameAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (sender) =>
             {
-                _importHandler(null, UIDocumentBrowserImportMode.None);
-            }
-            else
+                NSError error;
+                _newDocumentUrl = NSBundle.MainBundle.GetUrlForResource("Untitled", fileType, "Library/TemplateFiles");
+
+
+                var newFileName = newFilenameAlert.TextFields.First().Text;
+                if (newFileName != "")
+                {
+                    var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    var tmpdir = Path.Combine(documents, "..", "tmp");
+
+                    var newFilePath = Path.Combine(tmpdir, $"{newFileName}.{fileType}");
+
+                    var tempUrl = NSUrl.FromFilename(newFilePath);
+                    NSFileManager.DefaultManager.Copy(_newDocumentUrl, tempUrl, out error);
+
+                    var creationAttributes = new NSFileAttributes();
+                    creationAttributes.CreationDate = NSDate.Now;
+                    creationAttributes.ModificationDate = NSDate.Now;
+
+                    NSFileManager.DefaultManager.SetAttributes(creationAttributes, tempUrl.Path);
+
+                    if (tempUrl == null)
+                    {
+                        _importHandler(null, UIDocumentBrowserImportMode.None);
+                    }
+                    else
+                    {
+                        _importHandler(tempUrl, UIDocumentBrowserImportMode.Move);
+                    }
+                }
+                else
+                {
+                    var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    var tmpdir = Path.Combine(documents, "..", "tmp");
+
+                    var newFilePath = Path.Combine(tmpdir, $"Untitled.{fileType}");
+
+                    var tempUrl = NSUrl.FromFilename(newFilePath);
+                    NSFileManager.DefaultManager.Copy(_newDocumentUrl, tempUrl, out error);
+
+                    var creationAttributes = new NSFileAttributes();
+                    creationAttributes.CreationDate = NSDate.Now;
+                    creationAttributes.ModificationDate = NSDate.Now;
+
+                    NSFileManager.DefaultManager.SetAttributes(creationAttributes, tempUrl.Path);
+
+                    if (tempUrl == null)
+                    {
+                        _importHandler(null, UIDocumentBrowserImportMode.None);
+                    }
+                    else
+                    {
+                        _importHandler(tempUrl, UIDocumentBrowserImportMode.Move);
+                    }
+                }
+
+
+
+            }));
+
+            newFilenameAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (sender) =>
             {
-                _importHandler(_newDocumentUrl, UIDocumentBrowserImportMode.Copy);
-            }
-           
+                
+            }));
+            // Present Alert
+            _controller.PresentViewController(newFilenameAlert, true, null);
+
         }
 
-        private void CreateBlankFile()
+        void CreateBlankFile()
         {
-            _newDocumentUrl = NSBundle.MainBundle.GetUrlForResource("Untitled", "Blank", "Library/TemplateFiles");
-
-            if (_newDocumentUrl == null)
+            var newFilenameAlert = UIAlertController.Create("File Name", "Please enter the name of your file", UIAlertControllerStyle.Alert);
+            newFilenameAlert.AddTextField(textField =>
             {
-                _importHandler(null, UIDocumentBrowserImportMode.None);
-            }
-            else
-            {
-                _importHandler(_newDocumentUrl, UIDocumentBrowserImportMode.Copy);
-            }
+                // If you need to customize the text field, you can do so here.
+            });
 
+
+            //Add Action
+            newFilenameAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (sender) =>
+            {
+                NSError error;
+                _newDocumentUrl = NSBundle.MainBundle.GetUrlForResource("Untitled", "Blank", "Library/TemplateFiles");
+
+
+                var newFileName = newFilenameAlert.TextFields.First().Text;
+                if (newFileName != "")
+                {
+                    var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    var tmpdir = Path.Combine(documents, "..", "tmp");
+
+                    var newFilePath = Path.Combine(tmpdir, newFileName);
+
+                    var tempUrl = NSUrl.FromFilename(newFilePath);
+                    NSFileManager.DefaultManager.Copy(_newDocumentUrl, tempUrl, out error);
+
+                    var creationAttributes = new NSFileAttributes();
+                    creationAttributes.CreationDate = NSDate.Now;
+                    creationAttributes.ModificationDate = NSDate.Now;
+
+                    NSFileManager.DefaultManager.SetAttributes(creationAttributes, tempUrl.Path);
+
+                    if (tempUrl == null)
+                    {
+                        _importHandler(null, UIDocumentBrowserImportMode.None);
+                    }
+                    else
+                    {
+                        _importHandler(tempUrl, UIDocumentBrowserImportMode.Move);
+                    }
+                }
+                else
+                {
+                    var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    var tmpdir = Path.Combine(documents, "..", "tmp");
+
+                    var newFilePath = Path.Combine(tmpdir, "Untitled");
+
+                    var tempUrl = NSUrl.FromFilename(newFilePath);
+                    NSFileManager.DefaultManager.Copy(_newDocumentUrl, tempUrl, out error);
+
+                    var creationAttributes = new NSFileAttributes();
+                    creationAttributes.CreationDate = NSDate.Now;
+                    creationAttributes.ModificationDate = NSDate.Now;
+
+                    NSFileManager.DefaultManager.SetAttributes(creationAttributes, tempUrl.Path);
+
+                    if (tempUrl == null)
+                    {
+                        _importHandler(null, UIDocumentBrowserImportMode.None);
+                    }
+                    else
+                    {
+                        _importHandler(tempUrl, UIDocumentBrowserImportMode.Move);
+                    }
+                }
+
+
+
+            }));
+
+            newFilenameAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (sender) =>
+            {
+
+            }));
+
+            _controller.PresentViewController(newFilenameAlert, true, null);
         }
     }
 }
