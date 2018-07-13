@@ -1,2 +1,2 @@
-# Documents
-Documents extends the the iOS Files application with advanced features.
+# LocalDoc (formally Documents)
+LocalDoc extends the the iOS Files application with advanced features.
